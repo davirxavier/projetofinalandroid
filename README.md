@@ -36,6 +36,6 @@ O aplicativo deve ter uma tela de login e cadastro e uma tela inicial que mostra
 ## Mockup das Telas
 Mockup básico idealizado das telas, sujeito de mudanças.
 
-![tela login][projeto/mockups/mockuplogin.png]
-![tela cadastro][projeto/mockups/mockupcadastro.png]
-![tela inicial][projeto/mockups/mockupinicial.png]
+![tela login](projeto/mockups/mockuplogin.png)
+![tela cadastro](projeto/mockups/mockupcadastro.png)
+![tela inicial](projeto/mockups/mockupinicial.png)
