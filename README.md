@@ -29,9 +29,10 @@ O aplicativo deve ter uma tela de login e cadastro e uma tela inicial que mostra
 ## Telas Idealizadas
 - Tela de login.
 - Tela de cadastro de perfil.
+- Tela de esqueci minha senha.
 - Tela de estatísticas diversas do usuário.
 - Tela inicial com mapa, percurso, calorias gastas e distância percorrida.
-- Tela de desafios.
+- Tela de desafios (caso as funcionalidade incertas sejam iniciadas).
 
 ## Mockup das Telas
 Mockup básico idealizado das telas, sujeito de mudanças.
