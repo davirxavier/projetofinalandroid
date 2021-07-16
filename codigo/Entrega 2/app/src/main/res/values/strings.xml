@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">AEP</string>
+    <string name="entrar">Entrar</string>
+    <string name="esqueci_senha">Esqueci minha senha</string>
+    <string name="cadastro">Inscreva-se</string>
+    <string name="ou_cadastro">Ou inscreva-se</string>
+    <string name="email_redefinicao">Será enviado um código para o seu e-mail, caso ele seja de uma conta válida.
+    </string>
+    <string name="email">E-mail</string>
+    <string name="seu_email">Seu e-mail</string>
+    <string name="senha">Senha</string>
+    <string name="altura">Altura(cm/m)</string>
+    <string name="sua_altura">Sua altura</string>
+    <string name="peso">Peso(Kg)</string>
+    <string name="seu_peso">Seu peso</string>
+    <string name="sexo">Sexo</string>
+    <string name="seu_sexo">Seu sexo</string>
+    <string name="masculino">Masculino</string>
+    <string name="feminino">Feminino</string>
+    <string name="ja_tem_conta">Já tem uma conta?</string>
+    <string name="continuar">Continuar</string>
+    <string name="sua_senha">Sua senha</string>
+    <string-array name="sexos">
+        <item>Feminino</item>
+        <item>Masculino</item>
+    </string-array>
+    <string name="distancia">Distância percorrida\n\n%1$s km</string>
+    <string name="calorias">Calorias gastas\n\n%1$s kcal</string>
+    <string name="cadastro_text">Cadastro ainda não implementado.</string>
+    <string name="esqueci_text">Esqueci minha senha ainda não implementado.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Davi Xavier</string>
+    <string name="nav_header_subtitle">davix@davi.com</string>
+    <string name="nav_header_desc">Cabeçalho de navegação</string>
+    <string name="action_settings">Configurações</string>
+
+    <string name="menu_home">Mapa</string>
+    <string name="menu_stats">Estatisticas</string>
+    <string name="menu_logout">Sair</string>
+</resources>

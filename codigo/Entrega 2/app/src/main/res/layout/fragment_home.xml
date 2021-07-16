@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".home.ui.home.HomeFragment">
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="0.9">
+
+        <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.google.android.gms.maps.SupportMapFragment" />
+    </FrameLayout>
+    
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/colorPrimary" android:background="@color/colorPrimary"
+            android:id="@+id/linearLayout" android:layout_weight="0.1">
+        <TextView
+                android:text="@string/distancia"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/distanciaText" android:layout_weight="0.5"
+                android:textColor="@android:color/white" android:textAlignment="center" android:gravity="center"/>
+        <TextView
+                android:text="@string/calorias"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/caloriasText" android:layout_weight="0.5"
+                android:textColor="@android:color/white" android:textAlignment="center" android:gravity="center"/>
+    </LinearLayout>
+</LinearLayout>
