@@ -11,21 +11,22 @@
             android:text="@string/altura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView10"
+            style="@style/AppTheme.PrimaryText"
             app:layout_constraintBottom_toTopOf="@+id/alturaField"
-            app:layout_constraintStart_toStartOf="@+id/alturaField" android:textColor="@color/colorPrimary"
-            android:textStyle="bold"/>
+            app:layout_constraintStart_toStartOf="@+id/alturaField"/>
     <TextView
             android:text="@string/peso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView11"
             app:layout_constraintStart_toStartOf="@+id/pesoField"
-            app:layout_constraintBottom_toTopOf="@+id/pesoField" android:textColor="@color/colorPrimary"
-            android:textStyle="bold"/>
+            app:layout_constraintBottom_toTopOf="@+id/pesoField"
+            style="@style/AppTheme.PrimaryText"/>
     <TextView
             android:text="@string/cadastro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView7"
-            android:textSize="24sp" app:layout_constraintTop_toTopOf="parent"
+            style="@style/AppTheme.TitleText"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"/>
     <TextView
@@ -34,14 +35,14 @@
             android:layout_height="wrap_content" android:id="@+id/textView8"
             app:layout_constraintStart_toStartOf="@+id/emailField"
             app:layout_constraintBottom_toTopOf="@+id/emailField"
-            android:textColor="@color/colorPrimary" android:textStyle="bold"/>
+            style="@style/AppTheme.PrimaryText"/>
     <TextView
             android:text="@string/senha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView9"
             app:layout_constraintStart_toStartOf="@+id/senhaField"
-            app:layout_constraintBottom_toTopOf="@+id/senhaField" android:textColor="@color/colorPrimary"
-            android:textStyle="bold"/>
+            app:layout_constraintBottom_toTopOf="@+id/senhaField"
+            style="@style/AppTheme.PrimaryText"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -75,16 +76,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView12"
             app:layout_constraintStart_toStartOf="@+id/sexoField" app:layout_constraintBottom_toTopOf="@+id/sexoField"
-            android:textColor="@color/colorPrimary" android:textStyle="bold"/>
+            style="@style/AppTheme.PrimaryText"/>
     <Button
             android:text="@string/continuar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/continuarButton"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@android:color/white" android:backgroundTint="@color/colorPrimary"
+            style="@style/AppTheme.ButtonPrimary"
             app:layout_constraintTop_toBottomOf="@+id/sexoField" android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.424"
-    />
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.424"/>
     <TextView
             android:text="@string/ja_tem_conta"
             android:layout_width="wrap_content"
@@ -118,6 +118,6 @@
             android:layout_height="wrap_content" android:id="@+id/entrarText"
             app:layout_constraintStart_toEndOf="@+id/textView13"
             android:layout_marginStart="4dp" app:layout_constraintBottom_toBottomOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="@+id/textView13" android:textColor="@color/colorPrimary"
+            style="@style/AppTheme.PrimaryText"
             android:textStyle="bold"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

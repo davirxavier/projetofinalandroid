@@ -9,7 +9,8 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView"
-            android:textSize="24sp" android:text="@string/esqueci_senha" app:layout_constraintStart_toStartOf="parent"
+            style="@style/AppTheme.TitleText"
+            android:text="@string/esqueci_senha" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.19"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.060000002"/>
@@ -29,14 +30,14 @@
             android:layout_height="wrap_content" android:id="@+id/entrarButton"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"
+            style="@style/AppTheme.ButtonPrimary"
             app:layout_constraintTop_toBottomOf="@+id/emailField"/>
     <TextView
             android:text="@string/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView2"
             android:linksClickable="false"
-            android:textColor="@color/colorPrimary" android:textStyle="bold"
+            style="@style/AppTheme.PrimaryText"
             app:layout_constraintStart_toStartOf="@+id/emailField" android:layout_marginBottom="3dp"
             app:layout_constraintBottom_toTopOf="@+id/emailField"/>
     <TextView
@@ -44,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/cadastroText"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="36dp"
-            android:textColor="@color/colorPrimary" android:textStyle="bold"
+            style="@style/AppTheme.PrimaryText"
             app:layout_constraintEnd_toEndOf="@+id/entrarButton"
             app:layout_constraintStart_toStartOf="@+id/entrarButton"/>
     <TextView

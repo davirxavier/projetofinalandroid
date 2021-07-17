@@ -17,6 +17,8 @@
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:id="@+id/periodoText"
+                      style="@style/AppTheme.PrimaryText"
+                      android:textSize="18sp"
                       app:layout_constraintTop_toTopOf="parent"
                       app:layout_constraintEnd_toEndOf="parent"
                       app:layout_constraintStart_toStartOf="parent"/>
@@ -36,6 +38,8 @@
                       android:layout_height="wrap_content"
                       android:gravity="end"
                       android:id="@+id/distanciaText"
+                      style="@style/AppTheme.PrimaryText"
+                      android:textSize="18sp"
                       app:layout_constraintTop_toTopOf="parent"
                       app:layout_constraintEnd_toEndOf="parent"
                       app:layout_constraintStart_toStartOf="parent"/>
@@ -43,6 +47,7 @@
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:gravity="end"
+                      android:textStyle="bold"
                       android:id="@+id/caloriasText"
                       app:layout_constraintBottom_toBottomOf="parent"
                       app:layout_constraintEnd_toEndOf="parent"

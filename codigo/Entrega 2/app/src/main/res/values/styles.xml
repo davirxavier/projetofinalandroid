@@ -12,5 +12,16 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
+    
+    <style name="AppTheme.PrimaryText">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="AppTheme.ButtonPrimary">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="AppTheme.TitleText">
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>
