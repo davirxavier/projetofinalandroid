@@ -37,6 +37,11 @@
     <string name="action_settings">Configurações</string>
 
     <string name="menu_home">Mapa</string>
-    <string name="menu_stats">Estatisticas</string>
+    <string name="menu_stats">Estatísticas</string>
     <string name="menu_logout">Sair</string>
+    <string name="distancia_curta">%1$dkm</string>
+    <string name="calorias_curta">%1$dkcal</string>
+    <string name="periodo">%1$dh - %2$dh</string>
+    
+    <string name="date_format">dd/MM/yyyy</string>
 </resources>

@@ -14,7 +14,6 @@ import davi.xavier.aep.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var homeViewModel: HomeViewModel
     private lateinit var map: GoogleMap
     private lateinit var mapFrag: SupportMapFragment
 
