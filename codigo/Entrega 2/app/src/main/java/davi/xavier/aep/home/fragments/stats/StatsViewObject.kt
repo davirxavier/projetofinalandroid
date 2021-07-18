@@ -1,4 +1,4 @@
-package davi.xavier.aep.home.ui.stats
+package davi.xavier.aep.home.fragments.stats
 
 import java.time.LocalDate
 

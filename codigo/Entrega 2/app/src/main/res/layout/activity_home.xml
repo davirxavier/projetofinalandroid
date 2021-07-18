@@ -30,12 +30,12 @@
 
         <androidx.fragment.app.FragmentContainerView
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:id="@+id/nav_host_fragment"
+                android:id="@+id/login_nav_host"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
-                app:navGraph="@navigation/mobile_navigation"/>
+                app:navGraph="@navigation/navigation_home"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

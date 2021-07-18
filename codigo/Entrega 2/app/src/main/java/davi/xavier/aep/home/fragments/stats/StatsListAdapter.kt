@@ -1,9 +1,8 @@
-package davi.xavier.aep.home.ui.stats
+package davi.xavier.aep.home.fragments.stats
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import davi.xavier.aep.R
 import davi.xavier.aep.databinding.StatsItemBinding

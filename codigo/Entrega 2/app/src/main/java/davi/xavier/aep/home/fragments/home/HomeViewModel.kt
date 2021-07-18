@@ -1,4 +1,4 @@
-package davi.xavier.aep.home.ui.home
+package davi.xavier.aep.home.fragments.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

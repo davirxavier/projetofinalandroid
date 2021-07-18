@@ -3,7 +3,7 @@ package davi.xavier.aep.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import davi.xavier.aep.home.ui.stats.StatsViewObject
+import davi.xavier.aep.home.fragments.stats.StatsViewObject
 import java.time.LocalDate
 
 class StatsViewModel : ViewModel() {

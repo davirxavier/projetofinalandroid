@@ -1,4 +1,4 @@
-package davi.xavier.aep.home.ui.home
+package davi.xavier.aep.home.fragments.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -45,5 +45,4 @@ class HomeFragment : Fragment() {
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(quix, 15f))
     } // TODO Fix landscape
-    // TODO Logout button
 }

@@ -2,9 +2,7 @@ package davi.xavier.aep.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -16,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import davi.xavier.aep.R
 import davi.xavier.aep.databinding.ActivityHomeBinding
-import davi.xavier.aep.login.LoginActivity
+import davi.xavier.aep.login.LoginHomeActivity
 
 
 class HomeActivity : AppCompatActivity() {
@@ -38,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         toggle.syncState()
         
         val navView: NavigationView = binding.navView
-        val navFrag = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navFrag = supportFragmentManager.findFragmentById(R.id.login_nav_host) as NavHostFragment
         val navController = navFrag.navController
 
         appBarConfiguration = AppBarConfiguration(
@@ -63,13 +61,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
+        val navController = findNavController(R.id.login_nav_host)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
     
     private fun onLogout() {
         // Todo set the real logout
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginHomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
