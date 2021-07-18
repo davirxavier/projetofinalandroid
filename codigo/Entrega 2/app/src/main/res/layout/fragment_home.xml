@@ -9,7 +9,7 @@
         tools:context=".home.fragments.home.HomeFragment">
     <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp" android:layout_weight="0.8">
+            android:layout_height="0dp" android:layout_weight="1">
 
         <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/map"
@@ -21,11 +21,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="70dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:backgroundTint="@color/colorPrimary" android:background="@color/colorPrimary"
-            android:layout_weight="0.1">
+            android:backgroundTint="@color/colorPrimary" android:background="@color/colorPrimary">
         <TextView
                 android:text="@string/distancia"
                 app:layout_constraintStart_toStartOf="parent"
