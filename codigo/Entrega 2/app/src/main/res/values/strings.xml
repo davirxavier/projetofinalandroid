@@ -24,8 +24,8 @@
         <item>Feminino</item>
         <item>Masculino</item>
     </string-array>
-    <string name="distancia">Distância percorrida\n\n%1$s km</string>
-    <string name="calorias">Calorias gastas\n\n%1$s kcal</string>
+    <string name="distancia">Distância percorrida\n\n%1$skm</string>
+    <string name="calorias">Calorias gastas\n\n%1$skcal</string>
     <string name="cadastro_text">Cadastro ainda não implementado.</string>
     <string name="esqueci_text">Esqueci minha senha ainda não implementado.</string>
     <string name="title_activity_home">HomeActivity</string>
@@ -41,7 +41,7 @@
     <string name="menu_logout">Sair</string>
     <string name="distancia_curta">%1$dkm</string>
     <string name="calorias_curta">%1$dkcal</string>
-    <string name="periodo">%1$dh - %2$dh</string>
+    <string name="periodo">%1$d - %2$d</string>
     
     <string name="date_format">dd/MM/yyyy</string>
 </resources>

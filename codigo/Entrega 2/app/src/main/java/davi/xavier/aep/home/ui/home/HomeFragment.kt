@@ -14,7 +14,6 @@ import davi.xavier.aep.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var map: GoogleMap
     private lateinit var mapFrag: SupportMapFragment
 
     override fun onCreateView(
@@ -38,15 +37,13 @@ class HomeFragment : Fragment() {
     }
 
     fun mapCallback(googleMap: GoogleMap) {
-        map = googleMap
-        
         val quix = LatLng(-4.979296205882684, -39.056413536665154)
-        map.addMarker(
+        googleMap.addMarker(
             MarkerOptions()
                 .position(quix)
                 .title("UFC - Campus Quixadá")
         )
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(quix, 15f))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(quix, 15f))
     } // TODO Fix landscape
     // TODO Logout button
 }
