@@ -39,6 +39,7 @@ class LoginFragment : Fragment() {
     
     private fun onLogin() {
         navController.navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
+        requireActivity().finish()
     }
 
     private fun onCadastro() {

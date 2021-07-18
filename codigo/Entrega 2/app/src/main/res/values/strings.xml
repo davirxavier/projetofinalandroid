@@ -29,8 +29,8 @@
     <string name="cadastro_text">Cadastro ainda não implementado.</string>
     <string name="esqueci_text">Esqueci minha senha ainda não implementado.</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Abrir drawer de navegação</string>
+    <string name="navigation_drawer_close">Fechar drawer de navegação</string>
     <string name="nav_header_title">Davi Xavier</string>
     <string name="nav_header_subtitle">davix@davi.com</string>
     <string name="nav_header_desc">Cabeçalho de navegação</string>
