@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation_login" app:startDestination="@id/loginFragment" android:label="@string/entrar">
+
+    <fragment android:id="@+id/loginFragment" android:name="davi.xavier.aep.login.LoginFragment"
+              android:label="@string/entrar">
+        <action android:id="@+id/action_loginFragment_to_signUpFragment" app:destination="@id/signUpFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+                app:destination="@id/forgotPasswordFragment" app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action android:id="@+id/action_loginFragment_to_homeActivity" app:destination="@id/homeActivity"
+                app:popUpTo="@id/homeActivity" app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment android:id="@+id/signUpFragment" android:name="davi.xavier.aep.login.SignUpFragment"
+              android:label="@string/cadastro">
+        <action android:id="@+id/action_signUpFragment_to_loginFragment" app:destination="@id/loginFragment"
+                app:popUpTo="@id/loginFragment" app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment android:id="@+id/forgotPasswordFragment" android:name="davi.xavier.aep.login.ForgotPasswordFragment"
+              android:label="@string/esqueci_senha">
+        <action android:id="@+id/action_forgotPasswordFragment_to_signUpFragment2"
+                app:destination="@id/signUpFragment" app:popUpTo="@id/loginFragment" app:popUpToInclusive="false"/>
+        <action android:id="@+id/action_forgotPasswordFragment_to_loginFragment" app:destination="@id/loginFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popUpTo="@id/loginFragment" app:popUpToInclusive="true"/>
+    </fragment>
+    <activity android:id="@+id/homeActivity" android:name="davi.xavier.aep.home.HomeActivity"
+              android:label="HomeActivity"/>
+</navigation>

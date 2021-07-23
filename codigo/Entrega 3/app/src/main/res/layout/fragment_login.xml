@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent" android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".login.LoginHomeActivity">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView"
+                style="@style/AppTheme.TitleText"
+                android:text="@string/app_name" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.19"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.060000002"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/emailField"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.37" android:hint="@string/seu_email"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/senhaField"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="64dp" android:layout_marginEnd="64dp"
+                app:layout_constraintTop_toBottomOf="@+id/emailField" android:layout_marginTop="32dp"
+                android:hint="@string/sua_senha"/>
+        <Button
+                android:text="@string/entrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/entrarButton"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/senhaField"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.13999999"
+                style="@style/AppTheme.ButtonPrimary"/>
+        <TextView
+                android:text="@string/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView2"
+                android:linksClickable="false"
+                style="@style/AppTheme.PrimaryText"
+                app:layout_constraintStart_toStartOf="@+id/emailField" android:layout_marginBottom="3dp"
+                app:layout_constraintBottom_toTopOf="@+id/emailField"/>
+        <TextView
+                android:text="@string/senha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView3"
+                android:linksClickable="false"
+                style="@style/AppTheme.PrimaryText"
+                app:layout_constraintStart_toStartOf="@+id/senhaField" android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/senhaField"/>
+        <TextView
+                android:text="@string/esqueci_senha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/esqueciText"
+                app:layout_constraintEnd_toEndOf="@+id/entrarButton"
+                app:layout_constraintStart_toStartOf="@+id/entrarButton"
+                android:textStyle="bold" android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/entrarButton" app:layout_constraintHorizontal_bias="0.521"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.43"/>
+        <TextView
+                android:text="@string/cadastro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/cadastroText"
+                app:layout_constraintEnd_toEndOf="@+id/esqueciText" app:layout_constraintStart_toStartOf="@+id/esqueciText"
+                android:textColor="@color/colorPrimary" android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/esqueciText" android:layout_marginTop="20dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
