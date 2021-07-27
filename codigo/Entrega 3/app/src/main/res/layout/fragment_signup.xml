@@ -42,6 +42,13 @@
                 app:layout_constraintStart_toStartOf="@+id/senhaField"
                 app:layout_constraintBottom_toTopOf="@+id/senhaField"
                 style="@style/AppTheme.PrimaryText"/>
+        <TextView
+                android:text="@string/confirmar_senha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView4"
+                style="@style/AppTheme.PrimaryText"
+                app:layout_constraintBottom_toTopOf="@+id/confirmarSenhaField"
+                app:layout_constraintStart_toStartOf="@+id/confirmarSenhaField"/>
         <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,6 +70,17 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@+id/emailField" android:layout_marginTop="32dp"
                 android:hint="@string/sua_senha"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/confirmarSenhaField"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:hint="@string/sua_senha" app:layout_constraintTop_toBottomOf="@+id/senhaField"
+                android:layout_marginTop="32dp"/>
         <Spinner
                 android:layout_width="0dp"
                 android:layout_height="40dp" android:id="@+id/sexoField"
@@ -102,7 +120,7 @@
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
                 android:hint="@string/sua_altura" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintTop_toBottomOf="@+id/senhaField" android:layout_marginTop="32dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/confirmarSenhaField" android:layout_marginTop="32dp"/>
         <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -56,14 +57,19 @@ class AuthViewModel : ViewModel() {
     
     fun signUp(email: String, password: String, height: Int, weight: Double, sex: Sex): Task<Void> {
         val task = firebaseAuth.createUserWithEmailAndPassword(email, password).continueWithTask {
-            val user = firebaseAuth.currentUser!!
-            val info = UserInfo(
-                userUid = user.uid,
-                height, weight, sex
-            )
+            if (it.isSuccessful) {
+                val user = firebaseAuth.currentUser!!
+                val info = UserInfo(
+                    userUid = user.uid,
+                    height, weight, sex
+                )
 
-            return@continueWithTask databaseReference.child(Constants.USER_INFO_PATH).child(user.uid).setValue(info)
+                return@continueWithTask databaseReference.child(Constants.USER_INFO_PATH).child(user.uid).setValue(info)
+            } else {
+                return@continueWithTask it.exception?.let { it1 -> Tasks.forException(it1) }
+            }
         }
+        
         task.addOnCompleteListener { 
             if (it.isSuccessful) {
                 updateInfoQuery()
