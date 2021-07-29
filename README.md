@@ -2,7 +2,6 @@
 
 ## Equipe
 - Francisco Davi Rodrigues Xavier
-- João Elias Lima Viana
 
 ## Descrição
 O aplicativo idealizado se trata de um aplicativo que utiliza o mapa para marcar percurso e distância percorrida, mostrando também o gasto calórico do exercício e o número de voltas realizadas em um percurso determinado pelo usuário. 
