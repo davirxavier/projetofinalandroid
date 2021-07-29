@@ -42,7 +42,8 @@
     <string name="menu_logout">Sair</string>
     <string name="distancia_curta">%1$dkm</string>
     <string name="calorias_curta">%1$dkcal</string>
-    <string name="periodo">%1$dh - %2$dh</string>
+    <string name="periodo">%1$sh - %2$sh</string>
+    <string name="periodo_short">%1$sh - Agora</string>
     
     <string name="date_format">dd/MM/yyyy</string>
     <string name="hour_format">HH:mm</string>

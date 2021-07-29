@@ -17,6 +17,7 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
+            android:name=".AepApplication"
             android:theme="@style/AppTheme">
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDoGytoaObZJeEsI-XaUQlCk2Egnq6mDXI"/>
@@ -25,10 +26,6 @@
                 android:name=".home.HomeActivity"
                 android:label="@string/title_activity_home"
                 android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".esquecisenha.EsqueciSenhaActivity">
-        </activity>
-        <activity android:name=".cadastro.CadastroActivity">
         </activity>
         <activity android:name=".login.LoginHomeActivity">
             <intent-filter>

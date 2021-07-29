@@ -43,7 +43,6 @@ class FirebaseLiveData<T>(
         override fun onCancelled(error: DatabaseError) {
             Log.w("FIREBASE_LIVE_DATA", "load:onCancelled", error.toException())
         }
-
     }
 
     interface DataBuilder<T> {
