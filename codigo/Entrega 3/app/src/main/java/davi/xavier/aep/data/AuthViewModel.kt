@@ -1,10 +1,7 @@
 package davi.xavier.aep.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -17,11 +14,21 @@ import davi.xavier.aep.data.entities.Sex
 import davi.xavier.aep.data.entities.UserInfo
 import davi.xavier.aep.util.Constants
 import davi.xavier.aep.util.FirebaseLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class AuthViewModel : ViewModel() {
     private val firebaseAuth: FirebaseAuth = Firebase.auth
     private val databaseReference: DatabaseReference = Firebase.database.reference
-    private val userInfoData: FirebaseLiveData<UserInfo> = FirebaseLiveData(null, UserInfoBuilder())
+    private val userInfoData: FirebaseLiveData<UserInfo> by lazy {
+        val data = FirebaseLiveData(null, UserInfoBuilder())
+        firebaseAuth.addAuthStateListener {
+            updateInfoQuery()
+        }
+        
+        return@lazy data
+    }
     
     fun isUserLogged(): Boolean {
         return firebaseAuth.currentUser != null
@@ -34,20 +41,18 @@ class AuthViewModel : ViewModel() {
     fun getCurrentUserInfo(): LiveData<UserInfo> {
         return userInfoData
     }
-    
-    fun login(login: String, password: String): Task<AuthResult> {
-        val task = firebaseAuth.signInWithEmailAndPassword(login, password)
-        task.addOnCompleteListener { result ->
-            if (result.isSuccessful) {
-                updateInfoQuery()
-            }
+
+    suspend fun login(login: String, password: String): AuthResult {
+        return withContext(Dispatchers.IO) {
+            firebaseAuth.signInWithEmailAndPassword(login, password).await()
         }
-        return task
     }
     
     private fun updateInfoQuery() {
         firebaseAuth.currentUser?.let { 
-            userInfoData.updateQuery(databaseReference.child(Constants.USER_INFO_PATH).child(it.uid))
+            userInfoData.updateQuery(databaseReference
+                .child(Constants.USER_INFO_PATH)
+                .child(it.uid))
         }
     }
     
@@ -55,30 +60,18 @@ class AuthViewModel : ViewModel() {
         firebaseAuth.signOut()
     }
     
-    fun signUp(email: String, password: String, height: Int, weight: Double, sex: Sex): Task<Void> {
-        val task = firebaseAuth.createUserWithEmailAndPassword(email, password).continueWithTask {
-            if (it.isSuccessful) {
-                val user = firebaseAuth.currentUser!!
-                val info = UserInfo(
-                    userUid = user.uid,
-                    height, weight, sex
-                )
+    suspend fun signUp(email: String, password: String, height: Int, weight: Double, sex: Sex) {
+        withContext(Dispatchers.IO) {
+            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            
+            val user = firebaseAuth.currentUser!!
+            val info = UserInfo(
+                userUid = user.uid,
+                height, weight, sex
+            )
 
-                return@continueWithTask databaseReference.child(Constants.USER_INFO_PATH).child(user.uid).setValue(info)
-            } else {
-                return@continueWithTask it.exception?.let { it1 -> Tasks.forException(it1) }
-            }
+            databaseReference.child(Constants.USER_INFO_PATH).child(user.uid).setValue(info).await()
         }
-        
-        task.addOnCompleteListener { 
-            if (it.isSuccessful) {
-                updateInfoQuery()
-            } else {
-                firebaseAuth.currentUser?.delete()
-            }
-        }
-        
-        return task
     }
     
     private class UserInfoBuilder : FirebaseLiveData.DataBuilder<UserInfo> {

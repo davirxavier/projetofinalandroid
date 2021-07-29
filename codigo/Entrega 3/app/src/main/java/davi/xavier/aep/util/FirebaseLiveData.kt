@@ -8,10 +8,12 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 
 class FirebaseLiveData<T>(
-    private var query: Query?,
-    val builder: DataBuilder<T>
+    query: Query?,
+    builder: DataBuilder<T>
 ) : LiveData<T>() {
     private val listener: FirebaseLiveDataEventListener = FirebaseLiveDataEventListener(builder)
+    var query = query
+        private set
 
     override fun onActive() {
         super.onActive()

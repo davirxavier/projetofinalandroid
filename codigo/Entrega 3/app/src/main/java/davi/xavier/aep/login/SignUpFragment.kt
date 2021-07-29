@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -18,6 +19,7 @@ import davi.xavier.aep.R
 import davi.xavier.aep.data.AuthViewModel
 import davi.xavier.aep.data.entities.Sex
 import davi.xavier.aep.databinding.FragmentSignupBinding
+import kotlinx.coroutines.launch
 
 
 class SignUpFragment : Fragment() {
@@ -66,35 +68,32 @@ class SignUpFragment : Fragment() {
         
         val height = binding.alturaField.text.toString().toInt()
         val weight = binding.pesoField.text.toString().toDouble()
-        
-        authViewModel.signUp(
-            email = binding.emailField.text.toString(),
-            password, height, weight,
-            sex = if (binding.sexoField.selectedItemPosition == 0) Sex.FEMALE else Sex.MALE
-        ).addOnCompleteListener { 
-            if (it.isSuccessful) {
+
+        lifecycleScope.launch {
+            var toastMessageId: Int? = null
+            
+            try {
+                authViewModel.signUp(
+                    email = binding.emailField.text.toString(),
+                    password, height, weight,
+                    sex = if (binding.sexoField.selectedItemPosition == 0) Sex.FEMALE else Sex.MALE
+                )
+
                 Toast.makeText(requireContext(), R.string.cadastro_text, Toast.LENGTH_SHORT).show()
                 navController.navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
-            } else {
-                var toastMessageId: Int? = null 
-                try {
-                    if (it.exception != null) {
-                        throw it.exception!!
-                    }
-                } catch (e: FirebaseAuthWeakPasswordException) {
-                    toastMessageId = R.string.weak_pass
-                } catch (e: FirebaseAuthInvalidCredentialsException) {
-                    toastMessageId = R.string.invalid_email
-                } catch (e: FirebaseAuthUserCollisionException) {
-                    toastMessageId = R.string.user_exists
-                } catch (e: Exception) {
-                    Log.e("SignUpError", e.message!!)
-                    toastMessageId = R.string.unknown_error
-                }
-                
-                toastMessageId?.let { messageId ->
-                    Toast.makeText(requireContext(), messageId, Toast.LENGTH_LONG).show()
-                }
+            } catch (e: FirebaseAuthWeakPasswordException) {
+                toastMessageId = R.string.weak_pass
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                toastMessageId = R.string.invalid_email
+            } catch (e: FirebaseAuthUserCollisionException) {
+                toastMessageId = R.string.user_exists
+            } catch (e: Exception) {
+                Log.e("SignUpError", e.message!!)
+                toastMessageId = R.string.unknown_error
+            }
+
+            toastMessageId?.let { messageId ->
+                Toast.makeText(requireContext(), messageId, Toast.LENGTH_LONG).show()
             }
         }
     }

@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import davi.xavier.aep.R
 import davi.xavier.aep.data.AuthViewModel
 import davi.xavier.aep.data.entities.Sex
 import davi.xavier.aep.databinding.FragmentLoginBinding
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
@@ -46,21 +48,15 @@ class LoginFragment : Fragment() {
     }
     
     private fun onLogin() {
-        try {
-            authViewModel.login(
-                binding.emailField.text.toString(),
-                binding.senhaField.text.toString()
-            ).addOnCompleteListener {
-                if (it.isSuccessful) {
+            lifecycleScope.launch {
+                try {
+                    authViewModel.login(binding.emailField.text.toString(), binding.senhaField.text.toString())
                     navController.navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
                     requireActivity().finish()
-                } else {
+                } catch (e: Exception) {
                     showInvalidCredentialsToast()
                 }
             }
-        } catch (e: IllegalArgumentException) {
-            showInvalidCredentialsToast()
-        }
     }
     
     private fun showInvalidCredentialsToast() {

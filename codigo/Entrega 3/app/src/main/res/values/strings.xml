@@ -45,6 +45,7 @@
     <string name="periodo">%1$dh - %2$dh</string>
     
     <string name="date_format">dd/MM/yyyy</string>
+    <string name="hour_format">HH:mm</string>
     
     <string name="invalid_credentials">Credenciais inválidas.</string>
     

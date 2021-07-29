@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import davi.xavier.aep.R
+import davi.xavier.aep.data.entities.StatEntry
 import davi.xavier.aep.databinding.StatsItemBinding
 import java.time.format.DateTimeFormatter
 
@@ -19,9 +20,9 @@ class StatsListAdapter : RecyclerView.Adapter<StatsListAdapter.StatsViewHolder>(
         val caloriasText = binding.caloriasText
     }
 
-    private var items: MutableList<StatsViewObject> = mutableListOf()
+    private var items: MutableList<StatEntry> = mutableListOf()
 
-    fun add(item: StatsViewObject) {
+    fun add(item: StatEntry) {
         items.add(item)
         notifyItemInserted(items.size)
     }
@@ -35,10 +36,10 @@ class StatsListAdapter : RecyclerView.Adapter<StatsListAdapter.StatsViewHolder>(
         }
     }
 
-    fun setAll(new: List<StatsViewObject>) {
+    fun setAll(aNew: List<StatEntry>) {
 //        val result = DiffUtil.calculateDiff(StringDiffChecker(this.items, new))
         items.clear()
-        items.addAll(new)
+        items.addAll(aNew)
 
 //        result.dispatchUpdatesTo(this)
     }
@@ -54,8 +55,12 @@ class StatsListAdapter : RecyclerView.Adapter<StatsListAdapter.StatsViewHolder>(
         val item = items[position]
         
         val context = holder.itemView.context
-        holder.periodoText.text = context.getString(R.string.periodo, item.periodStartHour, item.periodEndHour)
-        holder.dataText.text = item.date.format(DateTimeFormatter.ofPattern(context.getString(R.string.date_format)))
+        
+        val start = item.startTime?.format(DateTimeFormatter.ofPattern(context.getString(R.string.hour_format)))
+        val end = item.endTime?.format(DateTimeFormatter.ofPattern(context.getString(R.string.hour_format)))
+        
+        holder.periodoText.text = context.getString(R.string.periodo, start, end)
+        holder.dataText.text = item.startTime?.format(DateTimeFormatter.ofPattern(context.getString(R.string.date_format)))
         holder.distanciaText.text = context.getString(R.string.distancia_curta, item.distance)
         holder.caloriasText.text = context.getString(R.string.calorias_curta, item.calories)
     }
