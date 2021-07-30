@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 import davi.xavier.aep.data.entities.StatEntry
 import davi.xavier.aep.util.Constants
 import davi.xavier.aep.util.FirebaseLiveData
+import davi.xavier.aep.util.builders.StatsBuilder
 import kotlinx.coroutines.tasks.await
 import java.time.Instant
 import java.time.LocalDateTime
@@ -24,6 +25,8 @@ class StatRepository {
     
     private val stats: FirebaseLiveData<List<StatEntry>> by lazy {
         val data = FirebaseLiveData(null, StatsBuilder())
+        
+        updateInfoQuery(false)
         firebaseAuth.addAuthStateListener {
             updateInfoQuery()
         }
@@ -31,17 +34,16 @@ class StatRepository {
         return@lazy data
     }
 
-    private fun updateInfoQuery() {
+    private fun updateInfoQuery(updateLiveDataQuery: Boolean = true) {
         firebaseAuth.currentUser?.let {
             Log.i("Stats", "Updating stats userId reference.")
             
             val ref = database
-                .child(Constants.USER_INFO_PATH)
-                .child(it.uid)
                 .child(Constants.STATS_PATH)
+                .child(it.uid)
             
-            stats.updateQuery(ref)
             currentRef = ref
+            if (updateLiveDataQuery) stats.updateQuery(ref)
         }
     }
     
@@ -74,38 +76,5 @@ class StatRepository {
 
     private fun currentQuery(): DatabaseReference {
         return currentRef ?: throw IllegalStateException("User has not been authenticated or is invalid.")
-    }
-
-    class StatsBuilder : FirebaseLiveData.DataBuilder<List<StatEntry>> {
-        override fun buildData(dataSnapshot: DataSnapshot): List<StatEntry> {
-            val stats: MutableList<StatEntry> = mutableListOf()
-            for (ds in dataSnapshot.children) {
-                val dataValue = ds.value as Map<*, *>?
-                if (dataValue != null) {
-                    val millisStart = dataValue["startTime"] as Long?
-                    val millisEnd = dataValue["endTime"] as Long?
-
-                    var startTime: LocalDateTime? = null
-                    millisStart?.let {
-                        startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
-                    }
-
-                    var endTime: LocalDateTime? = null
-                    millisEnd?.let {
-                        endTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
-                    }
-
-                    stats.add(StatEntry(
-                        startTime = startTime,
-                        endTime = endTime,
-                        calories = dataValue["calories"] as Int?,
-                        distance = dataValue["distance"] as Int?,
-                        uid = dataValue["uid"] as String?
-                    ))
-                }
-            }
-
-            return stats
-        }
     }
 }
