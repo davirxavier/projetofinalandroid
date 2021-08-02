@@ -17,9 +17,16 @@ class StatsViewModel(private val repository: StatRepository) : ViewModel() {
         return statsData
     }
     
-    suspend fun createStat() {
-        withContext(Dispatchers.IO) {
+    suspend fun createStat(): String? {
+        return withContext(Dispatchers.IO) {
+            repository.finishPendingStats()
             repository.insert()
+        }
+    }
+    
+    suspend fun finishStats() {
+        withContext(Dispatchers.IO) {
+            repository.finishPendingStats()
         }
     }
     

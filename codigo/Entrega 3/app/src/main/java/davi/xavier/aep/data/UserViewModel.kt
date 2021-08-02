@@ -8,7 +8,7 @@ import davi.xavier.aep.data.entities.UserInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
+class UserViewModel(private val repository: UserRepository) : ViewModel() {
     private val userInfoData: LiveData<UserInfo> by lazy { 
         repository.getCurrentUserInfo()
     }
@@ -16,6 +16,12 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     fun isLogged(): Boolean = repository.isUserLogged()
     
     fun getUserInfo(): LiveData<UserInfo> = userInfoData
+    
+    suspend fun setCurrentStatUid(uid: String?) {
+        withContext(Dispatchers.IO) {
+            repository.setCurrentStat(uid)
+        }
+    }
     
     suspend fun login(email: String, password: String) {
         withContext(Dispatchers.IO) { repository.login(email, password) }
@@ -31,11 +37,11 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         withContext(Dispatchers.IO) { repository.logoff() }
     }
 
-    class AuthViewModelFactory(private val repository: AuthRepository) : ViewModelProvider.Factory {
+    class AuthViewModelFactory(private val repository: UserRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(repository) as T
+                return UserViewModel(repository) as T
             }
             throw IllegalArgumentException("Unknown viewmodel")
         }

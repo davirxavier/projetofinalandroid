@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import davi.xavier.aep.R
-import davi.xavier.aep.data.AuthViewModel
+import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.data.entities.Sex
 import davi.xavier.aep.databinding.FragmentSignupBinding
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignupBinding
     private lateinit var navController: NavController
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var userViewModel: UserViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSignupBinding.inflate(layoutInflater)
@@ -34,8 +34,8 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel: AuthViewModel by viewModels()
-        authViewModel = viewModel
+        val viewModel: UserViewModel by viewModels()
+        userViewModel = viewModel
 
         navController = Navigation.findNavController(requireActivity(), R.id.login_nav_host)
 
@@ -73,7 +73,7 @@ class SignUpFragment : Fragment() {
             var toastMessageId: Int? = null
             
             try {
-                authViewModel.signUp(
+                userViewModel.signUp(
                     email = binding.emailField.text.toString(),
                     password, height, weight,
                     sex = if (binding.sexoField.selectedItemPosition == 0) Sex.FEMALE else Sex.MALE

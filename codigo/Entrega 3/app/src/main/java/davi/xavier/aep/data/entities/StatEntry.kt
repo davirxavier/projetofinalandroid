@@ -8,4 +8,12 @@ data class StatEntry(
     var distance: Int? = null,
     var calories: Int? = null,
     var uid: String? = null
-)
+) {
+    fun toMap() = mutableMapOf(
+        "startTime" to startTime,
+        "endTime" to endTime,
+        "distance" to distance,
+        "calories" to calories,
+        "uid" to uid
+    )
+}

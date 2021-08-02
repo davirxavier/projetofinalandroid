@@ -12,16 +12,16 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import davi.xavier.aep.AepApplication
 import davi.xavier.aep.R
-import davi.xavier.aep.data.AuthViewModel
+import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.databinding.FragmentLoginBinding
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var navController: NavController
-    private val authViewModel: AuthViewModel by activityViewModels { 
-        AuthViewModel.AuthViewModelFactory(
-            (activity?.application as AepApplication).authRepository
+    private val userViewModel: UserViewModel by activityViewModels { 
+        UserViewModel.AuthViewModelFactory(
+            (activity?.application as AepApplication).userRepository
         )
     }
 
@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
             onEsqueciSenha()
         }
 
-        if (authViewModel.isLogged()) {
+        if (userViewModel.isLogged()) {
             navigateToHome()
         }
     }
@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
     private fun onLogin() {
             lifecycleScope.launch {
                 try {
-                    authViewModel.login(binding.emailField.text.toString(), binding.senhaField.text.toString())
+                    userViewModel.login(binding.emailField.text.toString(), binding.senhaField.text.toString())
                     navigateToHome()
                 } catch (e: Exception) {
                     showInvalidCredentialsToast()

@@ -8,29 +8,26 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import davi.xavier.aep.data.entities.Sex
 import davi.xavier.aep.data.entities.UserInfo
 import davi.xavier.aep.util.Constants
 import davi.xavier.aep.util.FirebaseLiveData
 import davi.xavier.aep.util.builders.UserInfoBuilder
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
-class AuthRepository {
+class UserRepository {
     private val firebaseAuth: FirebaseAuth by lazy { Firebase.auth }
     private val databaseReference: DatabaseReference by lazy { Firebase.database.reference }
     private var currentRef: DatabaseReference? = null
     
     private val userInfoData: FirebaseLiveData<UserInfo> by lazy {
-        val data = FirebaseLiveData(null, UserInfoBuilder())
-
+        return@lazy FirebaseLiveData(null, UserInfoBuilder())
+    }
+    
+    init {
         updateInfoQuery(false)
         firebaseAuth.addAuthStateListener {
             updateInfoQuery()
         }
-
-        return@lazy data
     }
 
     private fun updateInfoQuery(updateLiveDataQuery: Boolean = true) {
@@ -58,6 +55,12 @@ class AuthRepository {
 
     fun getCurrentUserInfo(): LiveData<UserInfo> {
         return userInfoData
+    }
+    
+    suspend fun setCurrentStat(uid: String?) {
+        currentQuery()
+            .updateChildren(mapOf("currentStat" to uid))
+            .await()
     }
 
     suspend fun login(login: String, password: String): AuthResult {

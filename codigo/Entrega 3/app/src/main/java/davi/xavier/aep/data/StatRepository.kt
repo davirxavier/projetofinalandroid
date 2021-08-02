@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ServerValue
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import davi.xavier.aep.data.entities.StatEntry
@@ -14,9 +12,6 @@ import davi.xavier.aep.util.Constants
 import davi.xavier.aep.util.FirebaseLiveData
 import davi.xavier.aep.util.builders.StatsBuilder
 import kotlinx.coroutines.tasks.await
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 class StatRepository {
     private val firebaseAuth: FirebaseAuth by lazy { Firebase.auth }
@@ -24,14 +19,14 @@ class StatRepository {
     private var currentRef: DatabaseReference? = null
     
     private val stats: FirebaseLiveData<List<StatEntry>> by lazy {
-        val data = FirebaseLiveData(null, StatsBuilder())
-        
+        return@lazy FirebaseLiveData(null, StatsBuilder())
+    }
+    
+    init {
         updateInfoQuery(false)
         firebaseAuth.addAuthStateListener {
             updateInfoQuery()
         }
-
-        return@lazy data
     }
 
     private fun updateInfoQuery(updateLiveDataQuery: Boolean = true) {
@@ -43,7 +38,7 @@ class StatRepository {
                 .child(it.uid)
             
             currentRef = ref
-            if (updateLiveDataQuery) stats.updateQuery(ref)
+            if (updateLiveDataQuery) stats.updateQuery(ref.orderByKey())
         }
     }
     
@@ -51,7 +46,7 @@ class StatRepository {
         return stats
     }
     
-    suspend fun insert() {
+    suspend fun insert(): String? {
         val ref = currentQuery().push()
 
         val map = mapOf(
@@ -60,12 +55,28 @@ class StatRepository {
         )
 
         ref.setValue(map).await()
+        return ref.key
     }
+    
+    suspend fun finishPendingStats() {
+        val snapshot = currentQuery()
+            .orderByChild("endTime")
+            .equalTo(null).get().await()
 
+        snapshot.ref.updateChildren(
+            snapshot.children.map { dataSnapshot -> dataSnapshot.key }
+                .associateBy({ "$it/endTime" }, {ServerValue.TIMESTAMP})
+        )
+    }
+    
     suspend fun updateStat(stat: StatEntry) {
         currentQuery()
             .child(stat.uid!!)
-            .setValue(stat).await()
+            .updateChildren(stat.toMap().apply {
+                remove("startTime")
+                remove("endTime")
+                remove("uid")
+            }).await()
     }
 
     suspend fun deleteStat(uid: String) {
