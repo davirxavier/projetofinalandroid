@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -23,5 +23,9 @@
     </style>
     <style name="AppTheme.TitleText">
         <item name="android:textSize">24sp</item>
+    </style>
+    <style name="AppTheme.MultilineTextEdit">
+        <item name="android:gravity">top|start</item>
+        <item name="android:inputType">textMultiLine</item>
     </style>
 </resources>
