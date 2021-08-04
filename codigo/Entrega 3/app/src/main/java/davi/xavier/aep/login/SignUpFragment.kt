@@ -37,7 +37,7 @@ class SignUpFragment : Fragment() {
         val viewModel: UserViewModel by viewModels()
         userViewModel = viewModel
 
-        navController = Navigation.findNavController(requireActivity(), R.id.login_nav_host)
+        navController = Navigation.findNavController(requireActivity(), R.id.home_nav_host)
 
         binding.sexoField.adapter = ArrayAdapter.createFromResource(
             requireContext(),

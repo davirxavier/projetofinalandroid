@@ -17,7 +17,7 @@ class LoginHomeActivity : AppCompatActivity() {
         binding = ActivityLoginHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHost = supportFragmentManager.findFragmentById(R.id.login_nav_host) as NavHostFragment
+        val navHost = supportFragmentManager.findFragmentById(R.id.home_nav_host) as NavHostFragment
         val navController = navHost.navController
         
         val appBarConfiguration = AppBarConfiguration(navController.graph)

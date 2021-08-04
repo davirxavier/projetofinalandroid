@@ -27,5 +27,6 @@
     <style name="AppTheme.MultilineTextEdit">
         <item name="android:gravity">top|start</item>
         <item name="android:inputType">textMultiLine</item>
+        <item name="android:scrollbars">vertical</item>
     </style>
 </resources>

@@ -24,6 +24,8 @@ class LoginFragment : Fragment() {
             (activity?.application as AepApplication).userRepository
         )
     }
+    
+    private var isLogging = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentLoginBinding.inflate(layoutInflater)
@@ -33,7 +35,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        navController = Navigation.findNavController(requireActivity(), R.id.login_nav_host)
+        navController = Navigation.findNavController(requireActivity(), R.id.home_nav_host)
 
         binding.entrarButton.setOnClickListener {
             onLogin()
@@ -53,6 +55,8 @@ class LoginFragment : Fragment() {
     }
     
     private fun onLogin() {
+        if (!isLogging) {
+            isLogging = true
             lifecycleScope.launch {
                 try {
                     userViewModel.login(binding.emailField.text.toString(), binding.senhaField.text.toString())
@@ -60,7 +64,9 @@ class LoginFragment : Fragment() {
                 } catch (e: Exception) {
                     showInvalidCredentialsToast()
                 }
+                isLogging = false
             }
+        }
     }
     
     private fun navigateToHome() {

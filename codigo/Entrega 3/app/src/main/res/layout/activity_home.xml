@@ -30,7 +30,7 @@
 
         <androidx.fragment.app.FragmentContainerView
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:id="@+id/login_nav_host"
+                android:id="@+id/home_nav_host"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
         binding.startButton.setOnClickListener { onPlayClick() }
         
         userViewModel.getUserInfo().observe(viewLifecycleOwner, {
-            isPlaying = it.currentStat != null
+            isPlaying = it != null && it.info.currentStat != null
             isProcessing = false
             
             val drawable = if (isPlaying) R.drawable.ic_baseline_stop_24 else R.drawable.ic_baseline_play_arrow_24

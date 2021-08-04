@@ -43,7 +43,7 @@
     <string name="menu_home">Mapa</string>
     <string name="menu_stats">Histórico</string>
     <string name="menu_logout">Sair</string>
-    <string name="distancia_curta">%1$dkm</string>
+    <string name="distancia_curta">%1$skm</string>
     <string name="calorias_curta">%1$dkcal</string>
     <string name="periodo">%1$sh - %2$sh</string>
     <string name="periodo_short">%1$sh - Agora</string>
@@ -62,6 +62,13 @@
     <string name="unknown_error">Ocorreu um erro desconhecido, tente novamente mais tarde.</string>
     
     <string name="management">Informações Adicionais</string>
+    
+    <string name="save_success">Salvo com sucesso.</string>
+    <string name="delete_success">Removido com sucesso.</string>
+    <string name="delete_confirm">Tem certeza que deseja excluir esse item do histórico?</string>
+    
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
     
     <string name="delete">Excluir</string>
     <string name="save">Salvar</string>

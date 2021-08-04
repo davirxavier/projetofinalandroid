@@ -28,12 +28,13 @@ class StatsBuilder : FirebaseLiveData.DataBuilder<List<StatEntry>> {
 
                 stats.add(
                     StatEntry(
-                    startTime = startTime,
-                    endTime = endTime,
-                    calories = dataValue["calories"] as Int?,
-                    distance = dataValue["distance"] as Int?,
-                    uid = dataValue["uid"] as String?
-                )
+                        startTime = startTime,
+                        endTime = endTime,
+                        calories = dataValue["calories"] as Int?,
+                        distance = dataValue["distance"] as Double?,
+                        obs = dataValue["obs"] as String?,
+                        uid = dataValue["uid"] as String?
+                    )
                 )
             }
         }

@@ -12,9 +12,16 @@ class StatsViewModel(private val repository: StatRepository) : ViewModel() {
     private val statsData: LiveData<List<StatEntry>> by lazy { 
         repository.getStats()
     }
+    private val cache: MutableMap<String, LiveData<StatEntry?>> by lazy { 
+        mutableMapOf()
+    }
     
     fun getStats(): LiveData<List<StatEntry>> {
         return statsData
+    }
+    
+    fun getStat(uid: String): LiveData<StatEntry?> {
+        return cache[uid] ?: repository.getStat(uid).also { cache[uid] = it }
     }
     
     suspend fun createStat(): String? {
@@ -36,14 +43,12 @@ class StatsViewModel(private val repository: StatRepository) : ViewModel() {
         }
     }
     
-    suspend fun updateStat(startTime: LocalDateTime,
-                           endTime: LocalDateTime?,
-                           distance: Int?,
+    suspend fun updateStat(distance: Double?,
                            calories: Int?,
+                           obs: String?,
                            uid: String) {
         withContext(Dispatchers.IO) {
-            val stat = StatEntry(startTime, endTime, distance, calories, uid)
-            
+            val stat = StatEntry(distance = distance, calories = calories, obs = obs, uid = uid)
             repository.updateStat(stat)
         }
     }

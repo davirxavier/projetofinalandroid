@@ -23,7 +23,7 @@ class ForgotPasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController = Navigation.findNavController(requireActivity(), R.id.login_nav_host)
+        navController = Navigation.findNavController(requireActivity(), R.id.home_nav_host)
 
         binding.cadastroText.setOnClickListener { 
             onCadastro()

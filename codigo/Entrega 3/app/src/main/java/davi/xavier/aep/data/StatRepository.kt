@@ -10,6 +10,7 @@ import com.google.firebase.ktx.Firebase
 import davi.xavier.aep.data.entities.StatEntry
 import davi.xavier.aep.util.Constants
 import davi.xavier.aep.util.FirebaseLiveData
+import davi.xavier.aep.util.builders.StatBuilder
 import davi.xavier.aep.util.builders.StatsBuilder
 import kotlinx.coroutines.tasks.await
 
@@ -44,6 +45,10 @@ class StatRepository {
     
     fun getStats(): LiveData<List<StatEntry>> {
         return stats
+    }
+    
+    fun getStat(uid: String): LiveData<StatEntry?>  {
+        return FirebaseLiveData(currentQuery().child(uid), StatBuilder())
     }
     
     suspend fun insert(): String? {

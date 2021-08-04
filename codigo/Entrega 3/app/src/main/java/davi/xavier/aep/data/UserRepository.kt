@@ -1,6 +1,7 @@
 package davi.xavier.aep.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -8,6 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import davi.xavier.aep.data.entities.User
 import davi.xavier.aep.data.entities.UserInfo
 import davi.xavier.aep.util.Constants
 import davi.xavier.aep.util.FirebaseLiveData
@@ -53,8 +55,11 @@ class UserRepository {
         return firebaseAuth.currentUser
     }
 
-    fun getCurrentUserInfo(): LiveData<UserInfo> {
-        return userInfoData
+    fun getCurrentUserInfo(): LiveData<User?> {
+        return Transformations.map(userInfoData) {
+            if (firebaseAuth.currentUser != null) User(firebaseAuth.currentUser!!.email ?: "", it) 
+            else null
+        }
     }
     
     suspend fun setCurrentStat(uid: String?) {

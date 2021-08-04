@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter
 
 class StatsListAdapter : ListAdapter<StatEntry, StatsListAdapter.StatsViewHolder>(callback) {
     
+    var itemTouchedCallback: ((item: StatEntry) -> Unit)? = null
+    
     companion object {
         private val callback = object : DiffUtil.ItemCallback<StatEntry>() {
             override fun areItemsTheSame(oldItem: StatEntry, newItem: StatEntry): Boolean {
@@ -60,7 +62,11 @@ class StatsListAdapter : ListAdapter<StatEntry, StatsListAdapter.StatsViewHolder
         }
         
         holder.dataText.text = item.startTime?.format(DateTimeFormatter.ofPattern(context.getString(R.string.date_format)))
-        holder.distanciaText.text = context.getString(R.string.distancia_curta, if (item.distance != null) item.distance else 0)
+        holder.distanciaText.text = context.getString(R.string.distancia_curta, String.format("%.2f", item.distance?.toFloat() ?: 0f))
         holder.caloriasText.text = context.getString(R.string.calorias_curta, if (item.calories != null) item.calories else 0)
+        
+        holder.itemView.setOnClickListener {
+            itemTouchedCallback?.let { it(item) }
+        }
     }
 }
