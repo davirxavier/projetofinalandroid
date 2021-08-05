@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import davi.xavier.aep.data.entities.StatEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
 
 class StatsViewModel(private val repository: StatRepository) : ViewModel() {
     private val statsData: LiveData<List<StatEntry>> by lazy { 
