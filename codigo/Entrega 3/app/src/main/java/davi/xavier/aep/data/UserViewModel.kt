@@ -38,6 +38,10 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
         withContext(Dispatchers.IO) { repository.logoff() }
     }
     
+    suspend fun forgotPassword(email: String) {
+        withContext(Dispatchers.IO) { repository.sendResetEmail(email) }
+    }
+    
     class AuthViewModelFactory(private val repository: UserRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(UserViewModel::class.java)) {

@@ -82,6 +82,10 @@ class UserRepository {
         val user = firebaseAuth.currentUser!!
         databaseReference.child(Constants.USER_INFO_PATH).child(user.uid).setValue(userInfo).await()
     }
+    
+    suspend fun sendResetEmail(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email).await()
+    }
 
     private fun currentQuery(): DatabaseReference {
         return currentRef ?: throw IllegalStateException("User has not been authenticated or is invalid.")

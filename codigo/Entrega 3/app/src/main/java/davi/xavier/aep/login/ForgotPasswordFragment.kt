@@ -6,14 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import davi.xavier.aep.AepApplication
 import davi.xavier.aep.R
+import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.databinding.FragmentForgotPasswordBinding
+import kotlinx.coroutines.launch
 
 class ForgotPasswordFragment : Fragment() {
     private lateinit var binding: FragmentForgotPasswordBinding
     private lateinit var navController: NavController
+    private var sending = false
+
+    private val userViewModel: UserViewModel by activityViewModels {
+        UserViewModel.AuthViewModelFactory(
+            (activity?.application as AepApplication).userRepository
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentForgotPasswordBinding.inflate(layoutInflater)
@@ -35,8 +47,19 @@ class ForgotPasswordFragment : Fragment() {
     }
     
     private fun onContinuar() {
-        Toast.makeText(requireContext(), R.string.esqueci_text, Toast.LENGTH_SHORT).show()
-        navController.navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment())
+        if (!sending) {
+            sending = true
+            lifecycleScope.launch {
+                try {
+                    userViewModel.forgotPassword(binding.emailField.text.toString())
+                    Toast.makeText(requireContext(), R.string.esqueci_text, Toast.LENGTH_LONG).show()
+                    navController.navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment())
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), R.string.unknown_error, Toast.LENGTH_LONG).show()
+                }
+                sending = false
+            }
+        }
     }
 
     private fun onCadastro() {

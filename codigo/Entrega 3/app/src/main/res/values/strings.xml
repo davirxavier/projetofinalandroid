@@ -30,8 +30,8 @@
     <string name="calorias">Calorias gastas\n\n%1$skcal</string>
     <string name="calorias_no_break">Calorias gastas estimadas: %1$skcal</string>
     <string name="time_spent">Tempo de treino: %1$s</string>
-    <string name="cadastro_text">Você foi cadastrado com sucesso, por favor faça login.</string>
-    <string name="esqueci_text">Esqueci minha senha ainda não implementado.</string>
+    <string name="cadastro_text">Você foi cadastrado com sucesso.</string>
+    <string name="esqueci_text">Foi enviado um e-mail de redefinição de senha para o endereço informado.</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Abrir drawer de navegação</string>
     <string name="navigation_drawer_close">Fechar drawer de navegação</string>
