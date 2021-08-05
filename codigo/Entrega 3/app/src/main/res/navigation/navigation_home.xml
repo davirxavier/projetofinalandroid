@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mobile_navigation"
+            app:startDestination="@+id/nav_home">
+
+    <fragment
+            android:id="@+id/nav_home"
+            android:name="davi.xavier.aep.home.fragments.home.HomeFragment"
+            android:label="@string/menu_home"
+            tools:layout="@layout/fragment_home"/>
+
+    <fragment
+            android:id="@+id/nav_stats"
+            android:name="davi.xavier.aep.home.fragments.stats.StatsFragment"
+            android:label="@string/menu_stats"
+            tools:layout="@layout/fragment_stats">
+        <action android:id="@+id/action_nav_stats_to_statInfoFragment" app:destination="@id/statInfoFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment android:id="@+id/statInfoFragment" android:name="davi.xavier.aep.home.fragments.stats.StatInfoFragment"
+              android:label="StatInfoFragment">
+        <argument android:name="statUid" app:argType="string"/>
+        <action android:id="@+id/action_statInfoFragment_to_nav_stats" app:destination="@id/nav_stats"
+                app:popUpTo="@id/nav_stats" app:popUpToInclusive="true"/>
+    </fragment>
+
+</navigation>

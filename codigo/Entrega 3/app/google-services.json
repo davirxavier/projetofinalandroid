@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "186837026664",
+    "project_id": "androidprojetofinal-eecd2",
+    "storage_bucket": "androidprojetofinal-eecd2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186837026664:android:c125d2164d6f2c10ab38dd",
+        "android_client_info": {
+          "package_name": "davi.xavier.aep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186837026664-u8c1lcb3n28oams4fmptl3lefdrhh9mv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM-TqIz3eqI82T28Y8xW0YHpoPcL9e83w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186837026664-u8c1lcb3n28oams4fmptl3lefdrhh9mv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">AEP</string>
+    <string name="entrar">Entrar</string>
+    <string name="esqueci_senha">Esqueci minha senha</string>
+    <string name="cadastro">Inscreva-se</string>
+    <string name="ou_cadastro">Ou inscreva-se</string>
+    <string name="email_redefinicao">Será enviado um código para o seu e-mail, caso ele seja de uma conta válida.
+    </string>
+    <string name="email">E-mail</string>
+    <string name="seu_email">Seu e-mail</string>
+    <string name="senha">Senha</string>
+    <string name="confirmar_senha">Confirmar Senha</string>
+    <string name="altura">Altura(cm)</string>
+    <string name="sua_altura">Sua altura</string>
+    <string name="peso">Peso(Kg)</string>
+    <string name="seu_peso">Seu peso</string>
+    <string name="sexo">Sexo</string>
+    <string name="seu_sexo">Seu sexo</string>
+    <string name="masculino">Masculino</string>
+    <string name="feminino">Feminino</string>
+    <string name="ja_tem_conta">Já tem uma conta?</string>
+    <string name="continuar">Continuar</string>
+    <string name="sua_senha">Sua senha</string>
+    <string-array name="sexos">
+        <item>Feminino</item>
+        <item>Masculino</item>
+    </string-array>
+    <string name="distancia">Distância percorrida\n\n%1$skm</string>
+    <string name="distancia_no_break">Distância percorrida: %1$skm</string>
+    <string name="calorias">Calorias gastas\n\n%1$skcal</string>
+    <string name="calorias_no_break">Calorias gastas estimadas: %1$skcal</string>
+    <string name="time_spent">Tempo de treino: %1$s</string>
+    <string name="cadastro_text">Você foi cadastrado com sucesso.</string>
+    <string name="esqueci_text">Foi enviado um e-mail de redefinição de senha para o endereço informado.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Abrir drawer de navegação</string>
+    <string name="navigation_drawer_close">Fechar drawer de navegação</string>
+    <string name="nav_header_title">Davi Xavier</string>
+    <string name="nav_header_subtitle">davix@davi.com</string>
+    <string name="nav_header_desc">Cabeçalho de navegação</string>
+    <string name="action_settings">Configurações</string>
+
+    <string name="menu_home">Mapa</string>
+    <string name="menu_stats">Histórico</string>
+    <string name="menu_logout">Sair</string>
+    <string name="distancia_curta">%1$skm</string>
+    <string name="calorias_curta">%1$dkcal</string>
+    <string name="periodo">%1$sh - %2$sh</string>
+    <string name="periodo_short">%1$sh - Agora</string>
+    
+    <string name="date_format">dd/MM/yyyy</string>
+    <string name="hour_format">HH:mm</string>
+    <string name="time_format">HH:mm:ss</string>
+    
+    <string name="invalid_credentials">Credenciais inválidas.</string>
+    
+    <string name="invalid_email">Por favor insira um e-mail válido.</string>
+    <string name="weak_pass">Essa senha é muito fraca.</string>
+    <string name="user_exists">Um usuário com esse e-mail já existe.</string>
+    <string name="passwords_not_equal">As senhas inseridas não conferem.</string>
+    <string name="empty_fields">Preencha todos campos para completar o cadastro.</string>
+    <string name="unknown_error">Ocorreu um erro desconhecido, tente novamente mais tarde.</string>
+    
+    <string name="management">Informações Adicionais</string>
+    
+    <string name="save_success">Salvo com sucesso.</string>
+    <string name="delete_success">Removido com sucesso.</string>
+    <string name="delete_confirm">Tem certeza que deseja excluir esse item do histórico?</string>
+    
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    
+    <string name="delete">Excluir</string>
+    <string name="save">Salvar</string>
+    <string name="obs">Observações do Treino</string>
+</resources>

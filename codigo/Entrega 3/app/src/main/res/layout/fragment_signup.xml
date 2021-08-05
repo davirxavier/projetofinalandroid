@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="match_parent" android:layout_width="match_parent" android:fillViewport="true" xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".cadastro.CadastroActivity">
+
+        <TextView
+                android:text="@string/altura"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView10"
+                style="@style/AppTheme.PrimaryText"
+                app:layout_constraintBottom_toTopOf="@+id/alturaField"
+                app:layout_constraintStart_toStartOf="@+id/alturaField"/>
+        <TextView
+                android:text="@string/peso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView11"
+                app:layout_constraintStart_toStartOf="@+id/pesoField"
+                app:layout_constraintBottom_toTopOf="@+id/pesoField"
+                style="@style/AppTheme.PrimaryText"/>
+        <TextView
+                android:text="@string/cadastro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView7"
+                style="@style/AppTheme.TitleText"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"/>
+        <TextView
+                android:text="@string/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView8"
+                app:layout_constraintStart_toStartOf="@+id/emailField"
+                app:layout_constraintBottom_toTopOf="@+id/emailField"
+                style="@style/AppTheme.PrimaryText"/>
+        <TextView
+                android:text="@string/senha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView9"
+                app:layout_constraintStart_toStartOf="@+id/senhaField"
+                app:layout_constraintBottom_toTopOf="@+id/senhaField"
+                style="@style/AppTheme.PrimaryText"/>
+        <TextView
+                android:text="@string/confirmar_senha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView4"
+                style="@style/AppTheme.PrimaryText"
+                app:layout_constraintBottom_toTopOf="@+id/confirmarSenhaField"
+                app:layout_constraintStart_toStartOf="@+id/confirmarSenhaField"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/emailField"
+                android:hint="@string/seu_email" android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.147" app:layout_constraintHorizontal_bias="0.0"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/senhaField"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/emailField" android:layout_marginTop="32dp"
+                android:hint="@string/sua_senha"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/confirmarSenhaField"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:hint="@string/sua_senha" app:layout_constraintTop_toBottomOf="@+id/senhaField"
+                android:layout_marginTop="32dp"/>
+        <Spinner
+                android:layout_width="0dp"
+                android:layout_height="40dp" android:id="@+id/sexoField"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="64dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="64dp" app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintTop_toBottomOf="@+id/pesoField" android:layout_marginTop="32dp"/>
+        <TextView
+                android:text="@string/sexo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView12"
+                app:layout_constraintStart_toStartOf="@+id/sexoField" app:layout_constraintBottom_toTopOf="@+id/sexoField"
+                style="@style/AppTheme.PrimaryText"/>
+        <Button
+                android:text="@string/continuar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/continuarButton"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                style="@style/AppTheme.ButtonPrimary"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintTop_toBottomOf="@+id/sexoField" app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+                android:text="@string/ja_tem_conta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView13"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.439"
+                app:layout_constraintTop_toBottomOf="@+id/continuarButton" android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.0"
+                android:layout_marginBottom="16dp"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/alturaField"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                android:hint="@string/sua_altura" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/confirmarSenhaField" android:layout_marginTop="32dp"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/pesoField"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="64dp" android:layout_marginStart="64dp"
+                android:hint="@string/seu_peso" app:layout_constraintTop_toBottomOf="@+id/alturaField"
+                android:layout_marginTop="32dp"/>
+        <TextView
+                android:text="@string/entrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/entrarText"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                android:layout_marginStart="4dp" app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                style="@style/AppTheme.PrimaryText"
+                android:textStyle="bold"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
