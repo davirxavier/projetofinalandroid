@@ -2,6 +2,7 @@ package davi.xavier.aep.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -14,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
 import davi.xavier.aep.AepApplication
 import davi.xavier.aep.R
@@ -23,6 +25,8 @@ import davi.xavier.aep.home.fragments.stats.StatInfoFragment
 import davi.xavier.aep.login.LoginHomeActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.launch
+import java.util.stream.Collectors
+import java.util.stream.IntStream
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

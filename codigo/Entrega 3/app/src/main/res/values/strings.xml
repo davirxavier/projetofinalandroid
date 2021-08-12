@@ -73,4 +73,7 @@
     <string name="delete">Excluir</string>
     <string name="save">Salvar</string>
     <string name="obs">Observações do Treino</string>
+    
+    <string name="start_point">Início do Exercício</string>
+    <string name="end_point">Fim do Exercício</string>
 </resources>

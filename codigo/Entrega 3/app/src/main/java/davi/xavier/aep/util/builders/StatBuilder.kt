@@ -1,11 +1,14 @@
 package davi.xavier.aep.util.builders
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot
 import davi.xavier.aep.data.entities.StatEntry
 import davi.xavier.aep.util.FirebaseLiveData
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.stream.Collectors.toMap
+import java.util.stream.IntStream
 
 class StatBuilder : FirebaseLiveData.DataBuilder<StatEntry?> {
     override fun buildData(dataSnapshot: DataSnapshot): StatEntry? {
@@ -24,6 +27,17 @@ class StatBuilder : FirebaseLiveData.DataBuilder<StatEntry?> {
             millisEnd?.let {
                 endTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
             }
+            
+            val locations: MutableList<LatLng> = mutableListOf()
+            (dataValue["locations"] as String?)?.takeIf { it.isNotEmpty() }?.let { locString ->
+                val split = locString.split(",")
+
+                for (i in split.indices step 2) {
+                    try {
+                        locations.add(LatLng(split[i].toDouble(), split[i+1].toDouble()))
+                    } catch (ignored: Exception) {}
+                }
+            }
 
             StatEntry(
                 startTime = startTime,
@@ -31,6 +45,7 @@ class StatBuilder : FirebaseLiveData.DataBuilder<StatEntry?> {
                 calories = dataValue["calories"] as Int?,
                 distance = dataValue["distance"] as Double?,
                 obs = dataValue["obs"] as String?,
+                locations = locations,
                 uid = dataValue["uid"] as String?
             )
         } else null

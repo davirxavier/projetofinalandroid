@@ -1,5 +1,6 @@
 package davi.xavier.aep.util.builders
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot
 import davi.xavier.aep.data.entities.StatEntry
 import davi.xavier.aep.util.FirebaseLiveData
@@ -26,6 +27,17 @@ class StatsBuilder : FirebaseLiveData.DataBuilder<List<StatEntry>> {
                     endTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
                 }
 
+                val locations: MutableList<LatLng> = mutableListOf()
+                (dataValue["locations"] as String?)?.takeIf { it.isNotEmpty() }?.let { locString ->
+                    val split = locString.split(",")
+
+                    for (i in split.indices step 2) {
+                        try {
+                            locations.add(LatLng(split[i].toDouble(), split[i+1].toDouble()))
+                        } catch (ignored: Exception) {}
+                    }
+                }
+
                 stats.add(
                     StatEntry(
                         startTime = startTime,
@@ -33,6 +45,7 @@ class StatsBuilder : FirebaseLiveData.DataBuilder<List<StatEntry>> {
                         calories = dataValue["calories"] as Int?,
                         distance = dataValue["distance"] as Double?,
                         obs = dataValue["obs"] as String?,
+                        locations = locations,
                         uid = dataValue["uid"] as String?
                     )
                 )
