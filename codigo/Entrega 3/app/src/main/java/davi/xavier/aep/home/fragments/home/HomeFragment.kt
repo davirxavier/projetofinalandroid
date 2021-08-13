@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -28,7 +27,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.SphericalUtil
 import com.google.maps.android.ktx.addMarker
+import com.google.maps.android.ktx.addPolyline
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.awaitMapLoad
 import davi.xavier.aep.AepApplication
@@ -36,8 +37,12 @@ import davi.xavier.aep.R
 import davi.xavier.aep.data.StatsViewModel
 import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.data.entities.StatEntry
+import davi.xavier.aep.data.entities.User
 import davi.xavier.aep.databinding.FragmentHomeBinding
+import davi.xavier.aep.util.Constants
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.LocalDateTime
 
 class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     private lateinit var binding: FragmentHomeBinding
@@ -64,6 +69,9 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     
     private lateinit var map: GoogleMap
     private var currentLine: Polyline? = null
+    private var startMarker: Marker? = null
+    private var currentUser: User? = null
+    private var currentStat: StatEntry? = null
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +79,7 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
 
         permissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
+                zoomOnCurrentLocation()
             } else {
                 // TODO Mensagem dizendo que a funcionalidade está desabilitada
             }
@@ -111,18 +120,44 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
         lifecycleScope.launchWhenCreated {
             map = mapFrag.awaitMap()
             
-            map.awaitMapLoad() // TODO Map load
-            
-            if (askForLocationPermission()) {
-                locationManager.getBestProvider(Criteria(), false)?.let { provider ->
-                    locationManager.getLastKnownLocation(provider)?.let { location ->
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+            map.awaitMapLoad()
+            zoomOnCurrentLocation()
+
+            userViewModel.getUserInfo().observe(viewLifecycleOwner, {
+                currentUser = it
+                isPlaying = it != null && it.info.currentStat != null
+                isProcessing = false
+
+                currentStatUid = it?.info?.currentStat
+
+                val drawable = if (isPlaying) R.drawable.ic_baseline_stop_24 else R.drawable.ic_baseline_play_arrow_24
+                binding.startButton.setImageDrawable(resources.getDrawable(drawable, requireContext().theme))
+
+                if (isPlaying) {
+                    currentStatUid?.let { uid ->
+                        val data = statsViewModel.getStat(uid)
+                        data.observe(viewLifecycleOwner, object : Observer<StatEntry?> {
+                            override fun onChanged(stat: StatEntry?) {
+                                data.removeObserver(this)
+                                stat?.locations?.let { locs -> currentSavedPoints = locs.toMutableList() }
+                                currentStat = stat
+
+                                updatePolyline()
+                                updateStatInfo()
+                                if (currentSavedPoints.isNotEmpty()) setUpStartMarker()
+                            }
+                        })
                     }
+
+                    requestLocations()
+                } else {
+                    currentStat = null
+                    currentSavedPoints = mutableListOf()
+                    currentLine?.remove()
+                    startMarker?.remove()
                 }
-                    
-                map.isMyLocationEnabled = true
-            }
-//            val bounds = LatLngBounds.builder()
+            })
+//            val bounds = LatLngBounds.builder() // TODO Map load
 //            currentSavedPoints.forEach { bounds.include(it) }
 //            if (currentSavedPoints.isEmpty()) {
 //
@@ -136,36 +171,6 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
         binding.distanciaText.text = getString(R.string.distancia, 0)
         
         binding.startButton.setOnClickListener { onPlayClick() }
-        
-        userViewModel.getUserInfo().observe(viewLifecycleOwner, {
-            isPlaying = it != null && it.info.currentStat != null
-            isProcessing = false
-            
-            currentStatUid = it?.info?.currentStat
-            
-            val drawable = if (isPlaying) R.drawable.ic_baseline_stop_24 else R.drawable.ic_baseline_play_arrow_24
-            binding.startButton.setImageDrawable(resources.getDrawable(drawable, requireContext().theme))
-            
-            if (isPlaying) {
-                currentStatUid?.let { uid ->
-                    val data = statsViewModel.getStat(uid)
-                    data.observe(viewLifecycleOwner, object : Observer<StatEntry?> {
-                        override fun onChanged(stat: StatEntry?) {
-                            stat?.locations?.let { locs -> currentSavedPoints = locs.toMutableList() }
-                            data.removeObserver(this)
-                            
-                            processMapPolyline()
-                            if (currentSavedPoints.isNotEmpty()) setUpStartMarker()
-                        }
-                    })
-                }
-                
-                requestLocations()
-            } else {
-                currentSavedPoints = mutableListOf()
-                currentLine?.remove()
-            }
-        })
     }
     
     private fun onPlayClick() {
@@ -209,22 +214,52 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
         }
     }
     
+    private fun zoomOnCurrentLocation() {
+        if (askForLocationPermission()) {
+            locationManager.getBestProvider(Criteria(), false)?.let { provider ->
+                locationManager.getLastKnownLocation(provider)?.let { location ->
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+                }
+            }
+
+            map.isMyLocationEnabled = true
+        }
+    }
+    
     fun setUpStartMarker() {
         currentSavedPoints.firstOrNull()?.let {
-            map.addMarker {
+            startMarker?.remove()
+            startMarker = map.addMarker {
                 position(it)
                 title(getString(R.string.start_point))
             }
         }
     }
 
-    fun processMapPolyline() {
-        val opts = PolylineOptions()
-            .color(R.color.colorAccent)
-        currentSavedPoints.forEach { opts.add(it) }
-
+    fun updatePolyline() {
         currentLine?.remove()
-        currentLine = map.addPolyline(opts)
+        currentLine = map.addPolyline {
+            addAll(currentSavedPoints)
+            color((0xFF5752E5L).toInt())
+        }
+    }
+    
+    private fun updateStatInfo() {
+        val duration = Duration.between(currentStat?.startTime, LocalDateTime.now()).seconds / 3600.0
+        val distanceKm = SphericalUtil.computeLength(currentSavedPoints)/1000
+        val calories = Constants.getCaloriesBurned(duration, distanceKm, currentUser?.info?.weight ?: Constants.DEFAULT_WEIGHT).toInt()
+        
+        binding.distanciaText.text = getString(R.string.distancia, String.format("%.2f", distanceKm))
+        binding.caloriasText.text = getString(R.string.calorias, calories)
+        
+        currentStat?.let {
+            it.calories = calories
+            it.distance = distanceKm
+            
+            lifecycleScope.launch {
+                statsViewModel.updateStat(it)
+            }
+        }
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -262,7 +297,8 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
             
             currentSavedPoints.add(loc)
             lifecycleScope.launch { currentStatUid?.let { statsViewModel.addLatLngToStat(it, loc) } }
-            processMapPolyline()
+            updatePolyline()
+            updateStatInfo()
             
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 16f))
         }

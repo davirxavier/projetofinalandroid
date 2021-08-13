@@ -42,7 +42,7 @@ class StatBuilder : FirebaseLiveData.DataBuilder<StatEntry?> {
             StatEntry(
                 startTime = startTime,
                 endTime = endTime,
-                calories = dataValue["calories"] as Int?,
+                calories = (dataValue["calories"] as Number?)?.toInt(),
                 distance = dataValue["distance"] as Double?,
                 obs = dataValue["obs"] as String?,
                 locations = locations,
