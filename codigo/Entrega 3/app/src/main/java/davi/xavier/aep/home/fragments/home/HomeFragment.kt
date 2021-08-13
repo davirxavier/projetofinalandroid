@@ -291,6 +291,8 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
+        Log.e("LOCATION", "Location update received.")
+        
         val last = currentSavedPoints.lastOrNull()
         if (last == null || last.latitude != location.latitude || last.longitude != location.longitude) {
             val loc = LatLng(location.latitude, location.longitude)
