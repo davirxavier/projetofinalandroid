@@ -56,6 +56,7 @@ class StatRepository {
         val ref = currentQuery().push()
 
         val map = mapOf(
+            "distance" to 0,
             "startTime" to ServerValue.TIMESTAMP,
             "uid" to ref.key
         )
@@ -65,6 +66,14 @@ class StatRepository {
     }
     
     suspend fun finishPendingStats() {
+        val snapshotDelete = currentQuery()
+            .orderByChild("distance")
+            .equalTo(0.0).get().await()
+        
+        snapshotDelete.ref.updateChildren(
+            snapshotDelete.children.map { dataSnapshot -> dataSnapshot.key }.associateWith { null }
+        )
+        
         val snapshot = currentQuery()
             .orderByChild("endTime")
             .equalTo(null).get().await()
