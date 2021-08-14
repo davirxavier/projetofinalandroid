@@ -1,20 +1,15 @@
 package davi.xavier.aep.home.fragments.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.location.Criteria
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -27,7 +22,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.*
@@ -124,6 +118,9 @@ class HomeFragment : Fragment(), SensorEventListener {
             currentUser?.info?.weight?.let { 
                 putExtra(WEIGHT_INTENT, it)
             }
+            currentUser?.info?.height?.let { 
+                putExtra(HEIGHT_INTENT, it)
+            }
         })
     }
     
@@ -147,6 +144,10 @@ class HomeFragment : Fragment(), SensorEventListener {
         
         mapFrag = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFrag.onCreate(savedInstanceState)
+        
+        if (!checkLocationPermission()) {
+            permissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION) 
+        }
         
         lifecycleScope.launchWhenCreated {
             map = mapFrag.awaitMap()
@@ -208,8 +209,6 @@ class HomeFragment : Fragment(), SensorEventListener {
     }
     
     private fun onPlayClick() {
-        if (!askForLocationPermission()) return
-        
         if (!isProcessing) {
             lifecycleScope.launch {
                 isProcessing = true
@@ -244,7 +243,7 @@ class HomeFragment : Fragment(), SensorEventListener {
     }
     
     private fun zoomOnCurrentLocation() {
-        if (askForLocationPermission()) {
+        if (checkLocationPermission()) {
             var loc: LatLng? = null
             
             locationManager.getBestProvider(Criteria(), false)?.let { provider ->
@@ -385,24 +384,11 @@ class HomeFragment : Fragment(), SensorEventListener {
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
     
-    private fun askForLocationPermission(): Boolean {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-               return true
-            }
-            
-            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                showLocationRationale()
-                return false
-            }
-            else -> {
-                permissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                return false
-            }
-        }
+    private fun checkLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
     
     private fun showLocationRationale() {

@@ -1,8 +1,14 @@
 package davi.xavier.aep.home.fragments.home
 
+import android.Manifest
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
@@ -10,6 +16,7 @@ import android.location.LocationManager
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
@@ -26,33 +33,45 @@ import java.time.LocalDateTime
 
 const val UID_INTENT = "UID_INTENT"
 const val WEIGHT_INTENT = "WEIGHT_INTENT"
+const val HEIGHT_INTENT = "HEIGHT_INTENT"
 
-class LocationUpdateService : Service(), LocationListener {
+class LocationUpdateService : Service(), LocationListener, SensorEventListener {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
+    private lateinit var sensorManager: SensorManager
+    private var stepSensor: Sensor? = null
     
     private lateinit var repository: StatRepository
     private var notificationBuilder: NotificationCompat.Builder? = null
     private var currentStatUid: String? = null
     private var currentUserWeight: Double = Constants.DEFAULT_WEIGHT
+    private var currentUserHeight: Int = Constants.DEFAULT_HEIGHT
     private var currentStat: StatEntry? = null
     private var currentLocations: MutableList<LatLng> = mutableListOf()
     
     private var statData: LiveData<StatEntry?>? = null
     
+    private var stepCount = 0
+    
     override fun onCreate() {
         super.onCreate()
         repository = (application as AepApplication).statRepository
+        
+        sensorManager = getSystemService(SensorManager::class.java)
+        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
     }
     
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int { // TODO Use stepSensor if location is disabled
-        intent?.takeIf { intent.hasExtra(UID_INTENT) && intent.hasExtra(WEIGHT_INTENT) }?.let { originalIntent ->
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intent?.takeIf { 
+            intent.hasExtra(UID_INTENT) && intent.hasExtra(WEIGHT_INTENT) && intent.hasExtra(HEIGHT_INTENT) 
+        }?.let { originalIntent ->
             currentStatUid = originalIntent.getStringExtra(UID_INTENT)
             currentUserWeight = originalIntent.getDoubleExtra(WEIGHT_INTENT, Constants.DEFAULT_WEIGHT)
+            currentUserHeight = originalIntent.getIntExtra(HEIGHT_INTENT, Constants.DEFAULT_HEIGHT)
             
             val intentNotif = Intent(this, HomeActivity::class.java)
             val newIntent = PendingIntent.getActivity(this, 0, intentNotif, 0)
@@ -71,10 +90,21 @@ class LocationUpdateService : Service(), LocationListener {
                         .setContentText(System.nanoTime().toString())
                         .build())
             }
-            
+
             val locationManager = getSystemService(LocationManager::class.java)
-            locationManager.getBestProvider(Criteria(), true)?.let {
-                locationManager.requestLocationUpdates(it, 5000, 0f, this)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.getBestProvider(Criteria(), true)?.let {
+                    locationManager.requestLocationUpdates(it, 5000, 0f, this)
+                }
+                
+                sensorManager.unregisterListener(this)
+            } else { // TODO Use stepSensor if location is disabled
+                stepSensor?.let { 
+                    locationManager.removeUpdates(this)
+                    
+                    stepCount = 0
+                    sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
+                }
             }
             
             currentStatUid?.let { uid ->
@@ -98,6 +128,7 @@ class LocationUpdateService : Service(), LocationListener {
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
+        sensorManager.unregisterListener(this, stepSensor)
     }
 
     override fun onLocationChanged(location: Location) {
@@ -114,15 +145,18 @@ class LocationUpdateService : Service(), LocationListener {
                 currentLocations.add(loc)
                 updateStat()
 
-                Log.e("LOCATION", "Added new location to stat.")
+                Log.e("LOCATION_SERVICE", "Added new location to stat.")
             }
         }
     }
     
-    private fun updateStat() {
+    private fun updateStat(fromStepSensor: Boolean = false) {
         currentStat?.let {
             val duration = Duration.between(currentStat?.startTime ?: LocalDateTime.now(), LocalDateTime.now()).seconds / 3600.0
-            val distanceKm = SphericalUtil.computeLength(currentLocations)/1000
+            val distanceKm: Double = when {
+                fromStepSensor -> Constants.getDistanceKm(stepCount, currentUserHeight)
+                else -> SphericalUtil.computeLength(currentLocations)/1000
+            }
             val calories = Constants.getCaloriesBurned(duration, distanceKm, currentUserWeight).toInt()
             
             it.calories = calories
@@ -140,5 +174,20 @@ class LocationUpdateService : Service(), LocationListener {
                 }
             }
         }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.takeIf { event.sensor == stepSensor }?.let { 
+            stepCount += event.values[0].toInt()
+            Log.e("LOCATION_SERVICE", stepCount.toString())
+            
+            if (stepCount % Constants.STEP_UPDATE_LIMIT == 0) {
+                Log.e("LOCATION_SERVICE", "Updating current stat.")
+                updateStat(fromStepSensor = true)
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
 }
