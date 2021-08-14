@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
 import davi.xavier.aep.AepApplication
 import davi.xavier.aep.R
+import davi.xavier.aep.data.StatsViewModel
 import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.databinding.ActivityHomeBinding
 import davi.xavier.aep.home.fragments.home.LocationUpdateService
@@ -35,6 +36,10 @@ class HomeActivity : AppCompatActivity() {
     
     private val userViewModel: UserViewModel by viewModels { 
         UserViewModel.AuthViewModelFactory((application as AepApplication).userRepository)
+    }
+
+    private val statViewModel: StatsViewModel by viewModels {
+        StatsViewModel.StatsViewModelFactory((application as AepApplication).statRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,6 +108,7 @@ class HomeActivity : AppCompatActivity() {
     private fun onLogout() {
         lifecycleScope.launch {
             stopService(Intent(this@HomeActivity, LocationUpdateService::class.java))
+            statViewModel.finishStats()
             userViewModel.logoff()
         }
 

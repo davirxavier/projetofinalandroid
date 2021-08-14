@@ -359,11 +359,11 @@ class HomeFragment : Fragment(), SensorEventListener {
             val bounds = LatLngBounds.builder()
             currentSavedPoints.forEach { bounds.include(it) }
             locs.forEach { bounds.include(it) }
-            locationManager.getBestProvider(Criteria(), false)?.let { provider ->
-                locationManager.getLastKnownLocation(provider)?.let { location ->
-                    bounds.include(LatLng(location.latitude, location.longitude))
-                }
-            }
+//            locationManager.getBestProvider(Criteria(), false)?.let { provider ->
+//                locationManager.getLastKnownLocation(provider)?.let { location ->
+//                    bounds.include(LatLng(location.latitude, location.longitude))
+//                }
+//            }
             
             if (currentSavedPoints.isNotEmpty() || locs.isNotEmpty()) {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
