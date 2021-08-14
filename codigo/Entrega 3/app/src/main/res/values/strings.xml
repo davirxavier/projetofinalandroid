@@ -84,4 +84,9 @@
 
     <string name="see_route">Percurso</string>
     <string name="notif_title">Registrando Percurso</string>
+    
+    <string name="rationale_location_title">Permitir Localização</string>
+    <string name="rationale_location_text">O aplicativo necessita da permissão de localização para registrar o seu percurso, ele não vai funcionar como esperado sem essa permissão, tem certeza que deseja bloquea-la?</string>
+    <string name="im_certain">Bloquear permissão</string>
+    <string name="not_certain">Permitir acesso à localização</string>
 </resources>

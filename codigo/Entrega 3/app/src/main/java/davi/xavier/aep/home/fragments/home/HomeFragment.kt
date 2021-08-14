@@ -2,7 +2,9 @@ package davi.xavier.aep.home.fragments.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -56,8 +58,6 @@ class HomeFragment : Fragment(), SensorEventListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mapFrag: SupportMapFragment
     private lateinit var locationManager: LocationManager
-//    private lateinit var sensorManager: SensorManager
-//    private var sensorStep: Sensor? = null
     private lateinit var permissionRequest: ActivityResultLauncher<String>
     private val statsViewModel: StatsViewModel by activityViewModels { 
         StatsViewModel.StatsViewModelFactory(
@@ -110,13 +110,10 @@ class HomeFragment : Fragment(), SensorEventListener {
         permissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
                 zoomOnCurrentLocation()
-            } else {
-                // TODO Mensagem dizendo que a funcionalidade está desabilitada
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                showLocationRationale()
             }
         }
-
-//        sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-//        sensorStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
@@ -398,7 +395,7 @@ class HomeFragment : Fragment(), SensorEventListener {
             }
             
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                // TODO Mensagem explicando a utilização da funcionalidade
+                showLocationRationale()
                 return false
             }
             else -> {
@@ -406,5 +403,21 @@ class HomeFragment : Fragment(), SensorEventListener {
                 return false
             }
         }
+    }
+    
+    private fun showLocationRationale() {
+        val dialog = AlertDialog.Builder(requireContext()).apply {
+            setTitle(R.string.rationale_location_title)
+            setMessage(R.string.rationale_location_text)
+            setPositiveButton(R.string.im_certain) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            setNegativeButton(R.string.not_certain) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+                permissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }.create()
+
+        dialog.show()
     }
 }

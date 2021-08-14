@@ -1,6 +1,5 @@
 package davi.xavier.aep.home.fragments.home
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
@@ -50,8 +49,7 @@ class LocationUpdateService : Service(), LocationListener {
         return null
     }
 
-    @SuppressLint("MissingPermission") // TODO Verify permission
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int { // TODO Use stepSensor if location is disabled
         intent?.takeIf { intent.hasExtra(UID_INTENT) && intent.hasExtra(WEIGHT_INTENT) }?.let { originalIntent ->
             currentStatUid = originalIntent.getStringExtra(UID_INTENT)
             currentUserWeight = originalIntent.getDoubleExtra(WEIGHT_INTENT, Constants.DEFAULT_WEIGHT)
