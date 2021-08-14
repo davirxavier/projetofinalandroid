@@ -29,7 +29,8 @@
                 style="@style/AppTheme.ButtonPrimary"
                 android:clickable="true" android:id="@+id/startButton"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="12dp" android:layout_marginEnd="16dp" app:tint="@android:color/white"/>
+                android:layout_marginBottom="64dp" android:layout_marginEnd="16dp" app:tint="@android:color/white"
+        />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

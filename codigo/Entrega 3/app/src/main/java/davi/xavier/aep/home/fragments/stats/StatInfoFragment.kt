@@ -51,6 +51,7 @@ class StatInfoFragment : Fragment() {
         
         binding.buttonSave.setOnClickListener { onUpdate() }
         binding.deleteButton.setOnClickListener { onDelete() }
+        binding.routeButton.setOnClickListener { showRoute() }
         
         viewModel.getStat(args.statUid).observe(viewLifecycleOwner) {
             it?.let { stat ->
@@ -78,6 +79,7 @@ class StatInfoFragment : Fragment() {
                 binding.textCalories.text = getString(R.string.calorias_no_break, stat.calories ?: 0)
                 binding.textDistance.text = getString(R.string.distancia_no_break, String.format("%.2f", stat.distance?.toFloat() ?: 0f))
                 binding.textObsField.setText(stat.obs ?: "")
+                binding.routeButton.visibility = if (it.endTime != null) View.VISIBLE else View.INVISIBLE
             }
         }
     }
@@ -124,5 +126,9 @@ class StatInfoFragment : Fragment() {
     
     private fun navigateBack() {
         navController.navigateUp()
+    }
+    
+    private fun showRoute() {
+        navController.navigate(StatInfoFragmentDirections.actionStatInfoFragmentToNavHome(args.statUid))
     }
 }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
@@ -39,10 +41,12 @@ import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.data.entities.StatEntry
 import davi.xavier.aep.data.entities.User
 import davi.xavier.aep.databinding.FragmentHomeBinding
+import davi.xavier.aep.util.BitmapHelper
 import davi.xavier.aep.util.Constants
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     private lateinit var binding: FragmentHomeBinding
@@ -61,17 +65,37 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
             (activity?.application as AepApplication).userRepository
         )
     }
+    private val colorPrimary by lazy {
+        ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
+    }
+    private val colorExtra by lazy { 
+        ContextCompat.getColor(requireContext(), R.color.colorExtra)
+    }
+    private val runIcon: BitmapDescriptor by lazy { 
+        BitmapHelper.vectorToBitmap(requireContext(),
+            R.drawable.ic_baseline_directions_run_24,
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+    }
+    private val runIconExtra: BitmapDescriptor by lazy {
+        BitmapHelper.vectorToBitmap(requireContext(),
+            R.drawable.ic_baseline_directions_run_24,
+            ContextCompat.getColor(requireContext(), R.color.colorExtra))
+    }
+    private val args: HomeFragmentArgs by navArgs()
     
     private var isProcessing = true
     private var isPlaying = false
     private var currentSavedPoints: MutableList<LatLng> = mutableListOf()
     private var currentStatUid: String? = null
+    private var extraStatUid: String? = null
     
     private lateinit var map: GoogleMap
     private var currentLine: Polyline? = null
     private var startMarker: Marker? = null
+    
     private var currentUser: User? = null
     private var currentStat: StatEntry? = null
+    private var extraStat: StatEntry? = null
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,15 +138,15 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
+        extraStatUid = args.extraUid
+        
         mapFrag = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFrag.onCreate(savedInstanceState)
         
         lifecycleScope.launchWhenCreated {
             map = mapFrag.awaitMap()
-            
             map.awaitMapLoad()
-            zoomOnCurrentLocation()
-
+            
             userViewModel.getUserInfo().observe(viewLifecycleOwner, {
                 currentUser = it
                 isPlaying = it != null && it.info.currentStat != null
@@ -143,7 +167,9 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
                                 currentStat = stat
 
                                 updatePolyline()
+                                setUpStartMarker()
                                 updateStatInfo()
+                                zoomOnCurrentLocation()
                                 if (currentSavedPoints.isNotEmpty()) setUpStartMarker()
                             }
                         })
@@ -155,16 +181,16 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
                     currentSavedPoints = mutableListOf()
                     currentLine?.remove()
                     startMarker?.remove()
+                    zoomOnCurrentLocation()
                 }
             })
-//            val bounds = LatLngBounds.builder() // TODO Map load
-//            currentSavedPoints.forEach { bounds.include(it) }
-//            if (currentSavedPoints.isEmpty()) {
-//
-//            }
-//
-//            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
-            
+
+            extraStatUid?.let { extraUid ->
+                statsViewModel.getStat(extraUid).observe(viewLifecycleOwner) { foundStat ->
+                    extraStat = foundStat
+                    setUpExtra()
+                }
+            }
         }
 
         binding.caloriasText.text = getString(R.string.calorias, 0)
@@ -216,13 +242,24 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     
     private fun zoomOnCurrentLocation() {
         if (askForLocationPermission()) {
+            var loc: LatLng? = null
+            
             locationManager.getBestProvider(Criteria(), false)?.let { provider ->
                 locationManager.getLastKnownLocation(provider)?.let { location ->
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+                    loc = LatLng(location.latitude, location.longitude)
                 }
             }
 
-            map.isMyLocationEnabled = true
+            if (!map.isMyLocationEnabled) map.isMyLocationEnabled = true
+
+            if (currentSavedPoints.isNotEmpty()) {
+                val bounds = LatLngBounds.builder()
+                currentSavedPoints.forEach { bounds.include(it) }
+                loc?.let { bounds.include(it) }
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 80))
+            } else {
+                loc?.let { map.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 16f)) }
+            }
         }
     }
     
@@ -231,7 +268,9 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
             startMarker?.remove()
             startMarker = map.addMarker {
                 position(it)
+                icon(runIcon)
                 title(getString(R.string.start_point))
+                snippet(currentStat?.startTime?.format(DateTimeFormatter.ofPattern(getString(R.string.date_hour_format))))
             }
         }
     }
@@ -240,7 +279,61 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
         currentLine?.remove()
         currentLine = map.addPolyline {
             addAll(currentSavedPoints)
-            color((0xFF5752E5L).toInt())
+            color(colorPrimary)
+            width(12f)
+        }
+    }
+    
+    fun setUpExtra() {
+        extraStat?.takeUnless { it.locations.isNullOrEmpty() }?.let { stat ->
+            val locs = stat.locations!!
+            
+            val line = map.addPolyline {
+                addAll(locs)
+                color(colorExtra)
+                clickable(true)
+                width(12f)
+            }
+            
+            val lineInfoMarker = line.addInfoWindow(map, 
+                getString(R.string.distancia_curta, String.format("%.2f", stat.distance?.toFloat() ?: 0f)),
+                getString(R.string.calorias_curta, stat.calories ?: 0))
+            map.setOnPolylineClickListener { clickedLine ->
+                lineInfoMarker?.takeIf { clickedLine == line }?.let { marker ->
+                    if (marker.isInfoWindowShown) marker.hideInfoWindow()
+                    else marker.showInfoWindow()
+                }
+            }
+            
+            locs.firstOrNull()?.let {
+                map.addMarker {
+                    position(it)
+                    icon(runIconExtra)
+                    title(getString(R.string.start_point_marked))
+                    snippet(stat.startTime?.format(DateTimeFormatter.ofPattern(getString(R.string.date_hour_format))))
+                }
+            }
+            locs.takeIf { locs.size > 1 }?.lastOrNull()?.let {
+                map.addMarker {
+                    position(it)
+                    icon(runIconExtra)
+                    title(getString(R.string.end_point_marked))
+                    snippet(stat.endTime?.format(DateTimeFormatter.ofPattern(getString(R.string.date_hour_format))))
+                }
+            }
+
+            val bounds = LatLngBounds.builder()
+            currentSavedPoints.forEach { bounds.include(it) }
+            locs.forEach { bounds.include(it) }
+            locationManager.getBestProvider(Criteria(), false)?.let { provider ->
+                locationManager.getLastKnownLocation(provider)?.let { location ->
+                    bounds.include(LatLng(location.latitude, location.longitude))
+                }
+            }
+            
+            if (currentSavedPoints.isNotEmpty() || locs.isNotEmpty()) {
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
+            }
         }
     }
     
@@ -302,7 +395,25 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
             updatePolyline()
             updateStatInfo()
             
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 16f))
+            zoomOnCurrentLocation()
         }
+    }
+
+    fun Polyline.addInfoWindow(map: GoogleMap, title: String, message: String): Marker? {
+        val pointsOnLine = this.points.size
+        val infoLatLng = this.points[(pointsOnLine / 2)]
+        
+        val invisibleMarker =
+            BitmapDescriptorFactory.fromBitmap(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+        
+        return map.addMarker(
+            MarkerOptions()
+                .position(infoLatLng)
+                .title(title)
+                .snippet(message)
+                .alpha(0f)
+                .icon(invisibleMarker)
+                .anchor(0f, 0f)
+        )
     }
 }

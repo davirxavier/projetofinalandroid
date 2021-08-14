@@ -7,8 +7,6 @@ import davi.xavier.aep.util.FirebaseLiveData
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.stream.Collectors.toMap
-import java.util.stream.IntStream
 
 class StatBuilder : FirebaseLiveData.DataBuilder<StatEntry?> {
     override fun buildData(dataSnapshot: DataSnapshot): StatEntry? {
