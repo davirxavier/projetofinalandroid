@@ -7,9 +7,11 @@ object Constants {
     const val CURRENT_STAT = "current_stat"
     
     const val REQUEST_CODE_LOCATION = 0
-    
+
     const val DEFAULT_WEIGHT: Double = 60.0
-    
+    const val LIMIT_DISTANCE = 6
+
+
     fun getCaloriesBurned(timeHr: Double, distanceKm: Double, weight: Double): Double {
         val kph = distanceKm / timeHr
         

@@ -48,6 +48,8 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+import davi.xavier.aep.util.Constants.LIMIT_DISTANCE
+
 class HomeFragment : Fragment(), SensorEventListener, LocationListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mapFrag: SupportMapFragment
@@ -387,7 +389,8 @@ class HomeFragment : Fragment(), SensorEventListener, LocationListener {
         Log.e("LOCATION", "Location update received.")
         
         val last = currentSavedPoints.lastOrNull()
-        if (last == null || last.latitude != location.latitude || last.longitude != location.longitude) {
+        if (last == null || 
+            SphericalUtil.computeDistanceBetween(last, LatLng(location.latitude, location.longitude)) > LIMIT_DISTANCE) {
             val loc = LatLng(location.latitude, location.longitude)
             
             currentSavedPoints.add(loc)
