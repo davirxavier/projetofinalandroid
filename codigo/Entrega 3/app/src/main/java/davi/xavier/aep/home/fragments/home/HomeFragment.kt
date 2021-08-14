@@ -229,6 +229,8 @@ class HomeFragment : Fragment(), SensorEventListener {
                         val newStatUid = statsViewModel.createStat()
                         userViewModel.setCurrentStatUid(newStatUid)
 
+                        startMarker?.remove()
+                        endMarker?.remove()
                         startService()
                     } catch (e: Exception) {
                         Log.e("FINISH_STAT_ERROR", e.message ?: "", e)
