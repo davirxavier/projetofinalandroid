@@ -34,5 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service android:enabled="true" android:name=".home.fragments.home.LocationUpdateService" android:foregroundServiceType="location"/>
     </application>
 </manifest>

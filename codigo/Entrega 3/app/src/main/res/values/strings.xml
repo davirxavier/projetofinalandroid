@@ -52,6 +52,8 @@
     <string name="date_hour_format">dd/MM/yyyy - HH:mm:ss</string>
     <string name="hour_format">HH:mm</string>
     <string name="time_format">HH:mm:ss</string>
+    
+    <string name="distance_calories">%1$skm - %2$skcal</string>
 
     <string name="invalid_credentials">Credenciais inválidas.</string>
 
@@ -81,6 +83,5 @@
     <string name="end_point_marked">Fim do Exercício</string>
 
     <string name="see_route">Percurso</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notif_title">Registrando Percurso</string>
 </resources>

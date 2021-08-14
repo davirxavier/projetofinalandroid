@@ -21,6 +21,7 @@ import davi.xavier.aep.AepApplication
 import davi.xavier.aep.R
 import davi.xavier.aep.data.UserViewModel
 import davi.xavier.aep.databinding.ActivityHomeBinding
+import davi.xavier.aep.home.fragments.home.LocationUpdateService
 import davi.xavier.aep.home.fragments.stats.StatInfoFragment
 import davi.xavier.aep.login.LoginHomeActivity
 import kotlinx.android.synthetic.main.activity_home.*
@@ -101,6 +102,7 @@ class HomeActivity : AppCompatActivity() {
     
     private fun onLogout() {
         lifecycleScope.launch {
+            stopService(Intent(this@HomeActivity, LocationUpdateService::class.java))
             userViewModel.logoff()
         }
 
