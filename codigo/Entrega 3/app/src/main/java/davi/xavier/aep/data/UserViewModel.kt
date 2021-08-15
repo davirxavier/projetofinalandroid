@@ -35,7 +35,10 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
     }
     
     suspend fun logoff() {
-        withContext(Dispatchers.IO) { repository.logoff() }
+        withContext(Dispatchers.IO) { 
+            repository.setCurrentStat(null)
+            repository.logoff() 
+        }
     }
     
     suspend fun forgotPassword(email: String) {
