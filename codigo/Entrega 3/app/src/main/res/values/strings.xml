@@ -47,30 +47,46 @@
     <string name="calorias_curta">%1$dkcal</string>
     <string name="periodo">%1$sh - %2$sh</string>
     <string name="periodo_short">%1$sh - Agora</string>
-    
+
     <string name="date_format">dd/MM/yyyy</string>
+    <string name="date_hour_format">dd/MM/yyyy - HH:mm:ss</string>
     <string name="hour_format">HH:mm</string>
     <string name="time_format">HH:mm:ss</string>
     
+    <string name="distance_calories">%1$skm - %2$skcal</string>
+
     <string name="invalid_credentials">Credenciais inválidas.</string>
-    
+
     <string name="invalid_email">Por favor insira um e-mail válido.</string>
     <string name="weak_pass">Essa senha é muito fraca.</string>
     <string name="user_exists">Um usuário com esse e-mail já existe.</string>
     <string name="passwords_not_equal">As senhas inseridas não conferem.</string>
     <string name="empty_fields">Preencha todos campos para completar o cadastro.</string>
     <string name="unknown_error">Ocorreu um erro desconhecido, tente novamente mais tarde.</string>
-    
+
     <string name="management">Informações Adicionais</string>
-    
+
     <string name="save_success">Salvo com sucesso.</string>
     <string name="delete_success">Removido com sucesso.</string>
     <string name="delete_confirm">Tem certeza que deseja excluir esse item do histórico?</string>
-    
+
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    
+
     <string name="delete">Excluir</string>
     <string name="save">Salvar</string>
     <string name="obs">Observações do Treino</string>
+
+    <string name="start_point">Início do Exercício Atual</string>
+    <string name="end_point">Fim do Exercício Atual</string>
+    <string name="start_point_marked">Início do Exercício</string>
+    <string name="end_point_marked">Fim do Exercício</string>
+
+    <string name="see_route">Percurso</string>
+    <string name="notif_title">Registrando Percurso</string>
+    
+    <string name="rationale_location_title">Permitir Localização</string>
+    <string name="rationale_location_text">O aplicativo necessita da permissão de localização para registrar o seu percurso, sem ela você não irá poder visualizar seu percurso e os resultados mostrados pelo app podem perder precisão, tem certeza que deseja bloqueá-la?</string>
+    <string name="im_certain">Bloquear permissão</string>
+    <string name="not_certain">Permitir acesso à localização</string>
 </resources>

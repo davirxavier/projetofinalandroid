@@ -1,5 +1,6 @@
 package davi.xavier.aep.data.entities
 
+import com.google.android.gms.maps.model.LatLng
 import java.time.LocalDateTime
 
 data class StatEntry(
@@ -8,6 +9,7 @@ data class StatEntry(
     var distance: Double? = null,
     var calories: Int? = null,
     var obs: String? = null,
+    var locations: List<LatLng>? = null,
     var uid: String? = null
 ) {
     fun toMap() = mutableMapOf(

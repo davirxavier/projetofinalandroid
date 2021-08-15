@@ -3,6 +3,7 @@ package davi.xavier.aep.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.maps.model.LatLng
 import davi.xavier.aep.data.entities.StatEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -55,6 +56,12 @@ class StatsViewModel(private val repository: StatRepository) : ViewModel() {
     suspend fun updateStat(statEntry: StatEntry) {
         withContext(Dispatchers.IO) {
             repository.updateStat(statEntry)
+        }
+    }
+    
+    suspend fun addLatLngToStat(uid: String, loc: LatLng) {
+        withContext(Dispatchers.IO) {
+            repository.addLocation(uid, loc)
         }
     }
 
