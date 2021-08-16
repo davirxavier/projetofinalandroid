@@ -93,12 +93,10 @@ class LocationUpdateService : Service(), LocationListener, SensorEventListener {
 
             val locationManager = getSystemService(LocationManager::class.java)
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.getBestProvider(Criteria(), true)?.let {
-                    locationManager.requestLocationUpdates(it, 5000, 0f, this)
-                }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0f, this)
                 
                 sensorManager.unregisterListener(this)
-            } else { // TODO Use stepSensor if location is disabled
+            } else {
                 stepSensor?.let { 
                     locationManager.removeUpdates(this)
                     

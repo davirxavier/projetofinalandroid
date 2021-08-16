@@ -48,7 +48,7 @@ import davi.xavier.aep.util.observeOnce
 import java.time.Duration
 import java.time.LocalDateTime
 
-class HomeFragment : Fragment(), SensorEventListener {
+class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mapFrag: SupportMapFragment
     private lateinit var locationManager: LocationManager
@@ -112,9 +112,9 @@ class HomeFragment : Fragment(), SensorEventListener {
         locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
     
-    private fun startService() {
+    private fun startService(currentUid: String) {
         requireActivity().startService(Intent(requireActivity(), LocationUpdateService::class.java).apply { 
-            putExtra(UID_INTENT, currentStatUid)
+            putExtra(UID_INTENT, currentUid)
             currentUser?.info?.weight?.let { 
                 putExtra(WEIGHT_INTENT, it)
             }
@@ -228,10 +228,12 @@ class HomeFragment : Fragment(), SensorEventListener {
                     try {
                         val newStatUid = statsViewModel.createStat()
                         userViewModel.setCurrentStatUid(newStatUid)
+                        newStatUid?.let { 
+                            startService(it) 
+                        }
 
                         startMarker?.remove()
                         endMarker?.remove()
-                        startService()
                     } catch (e: Exception) {
                         Log.e("FINISH_STAT_ERROR", e.message ?: "", e)
                         message = R.string.unknown_error
@@ -357,11 +359,6 @@ class HomeFragment : Fragment(), SensorEventListener {
             val bounds = LatLngBounds.builder()
             currentSavedPoints.forEach { bounds.include(it) }
             locs.forEach { bounds.include(it) }
-//            locationManager.getBestProvider(Criteria(), false)?.let { provider ->
-//                locationManager.getLastKnownLocation(provider)?.let { location ->
-//                    bounds.include(LatLng(location.latitude, location.longitude))
-//                }
-//            }
             
             if (currentSavedPoints.isNotEmpty() || locs.isNotEmpty()) {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
@@ -377,14 +374,6 @@ class HomeFragment : Fragment(), SensorEventListener {
         binding.distanciaText.text = getString(R.string.distancia, String.format("%.2f", distanceKm))
         binding.caloriasText.text = getString(R.string.calorias, calories)
     }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-//        event?.takeIf { sensorStep != null && event.sensor == sensorStep }?.let {
-//            Log.e("Steps", event.values[0].toString())
-//        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
     
     private fun checkLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
