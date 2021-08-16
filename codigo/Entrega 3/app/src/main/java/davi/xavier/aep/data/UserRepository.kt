@@ -38,9 +38,11 @@ class UserRepository {
                 .child(Constants.USER_INFO_PATH)
                 .child(it.uid))
 
+            currentRef?.keepSynced(false)
             val ref = databaseReference
                 .child(Constants.USER_INFO_PATH)
                 .child(it.uid)
+            ref.keepSynced(true)
 
             currentRef = ref
             if (updateLiveDataQuery) userInfoData.updateQuery(ref)
@@ -62,10 +64,9 @@ class UserRepository {
         }
     }
     
-    suspend fun setCurrentStat(uid: String?) {
+    fun setCurrentStat(uid: String?) {
         currentQuery()
             .updateChildren(mapOf("currentStat" to uid))
-            .await()
     }
 
     suspend fun login(login: String, password: String): AuthResult {

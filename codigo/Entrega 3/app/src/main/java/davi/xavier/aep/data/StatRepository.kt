@@ -35,9 +35,11 @@ class StatRepository {
         firebaseAuth.currentUser?.let {
             Log.i("Stats", "Updating stats userId reference.")
             
+            currentRef?.keepSynced(false)
             val ref = database
                 .child(Constants.STATS_PATH)
                 .child(it.uid)
+            ref.keepSynced(true)
             
             currentRef = ref
             if (updateLiveDataQuery) stats.updateQuery(ref.orderByKey())
@@ -52,17 +54,18 @@ class StatRepository {
         return FirebaseLiveData(currentQuery().child(uid), StatBuilder())
     }
     
-    suspend fun insert(): String? {
+    fun insert(): String? {
         val ref = currentQuery().push()
+        val key = ref.key
 
         val map = mapOf(
             "distance" to 0,
             "startTime" to ServerValue.TIMESTAMP,
-            "uid" to ref.key
+            "uid" to key
         )
 
-        ref.setValue(map).await()
-        return ref.key
+        ref.setValue(map)
+        return key
     }
     
     suspend fun finishPendingStats() {
@@ -84,7 +87,7 @@ class StatRepository {
         )
     }
     
-    suspend fun updateStat(stat: StatEntry) {
+    fun updateStat(stat: StatEntry) {
         currentQuery()
             .child(stat.uid!!)
             .updateChildren(stat.toMap().apply {
@@ -92,13 +95,13 @@ class StatRepository {
                 remove("startTime")
                 remove("endTime")
                 remove("uid")
-            }).await()
+            })
     }
 
-    suspend fun deleteStat(uid: String) {
+    fun deleteStat(uid: String) {
         currentQuery()
             .child(uid)
-            .removeValue().await()
+            .removeValue()
     }
     
     suspend fun addLocation(uid: String, loc: LatLng) {
