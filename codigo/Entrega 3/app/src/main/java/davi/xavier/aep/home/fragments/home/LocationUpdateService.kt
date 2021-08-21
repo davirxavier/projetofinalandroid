@@ -143,7 +143,7 @@ class LocationUpdateService : Service(), LocationListener, SensorEventListener {
                 currentLocations.add(loc)
                 updateStat()
 
-                Log.e("LOCATION_SERVICE", "Added new location to stat.")
+                Log.i("LOCATION_SERVICE", "Added new location to stat.")
             }
         }
     }
@@ -177,10 +177,10 @@ class LocationUpdateService : Service(), LocationListener, SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         event?.takeIf { event.sensor == stepSensor }?.let { 
             stepCount += event.values[0].toInt()
-            Log.e("LOCATION_SERVICE", stepCount.toString())
+            Log.i("LOCATION_SERVICE", stepCount.toString())
             
             if (stepCount % Constants.STEP_UPDATE_LIMIT == 0) {
-                Log.e("LOCATION_SERVICE", "Updating current stat.")
+                Log.i("LOCATION_SERVICE", "Updating current stat.")
                 updateStat(fromStepSensor = true)
             }
         }
