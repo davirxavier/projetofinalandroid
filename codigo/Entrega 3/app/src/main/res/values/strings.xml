@@ -38,7 +38,7 @@
     <string name="nav_header_title">Davi Xavier</string>
     <string name="nav_header_subtitle">davix@davi.com</string>
     <string name="nav_header_desc">Cabeçalho de navegação</string>
-    <string name="action_settings">Configurações</string>
+    <string name="action_settings">Limpar percurso selecionado</string>
 
     <string name="menu_home">Mapa</string>
     <string name="menu_stats">Histórico</string>
