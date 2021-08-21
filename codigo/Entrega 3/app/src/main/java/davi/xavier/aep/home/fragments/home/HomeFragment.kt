@@ -153,8 +153,6 @@ class HomeFragment : Fragment() {
             map = mapFrag.awaitMap()
             map.awaitMapLoad()
             map.setOnPolylineClickListener { 
-                Log.e("", lineMarkers.toString())
-                
                 lineMarkers[it]?.let { marker ->
                     if (marker.isInfoWindowShown) marker.hideInfoWindow()
                     else marker.showInfoWindow()
@@ -228,8 +226,8 @@ class HomeFragment : Fragment() {
                     try {
                         val newStatUid = statsViewModel.createStat()
                         userViewModel.setCurrentStatUid(newStatUid)
-                        newStatUid?.let { 
-                            startService(it) 
+                        newStatUid?.let {
+                            startService(it)
                         }
 
                         startMarker?.remove()
