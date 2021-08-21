@@ -3,6 +3,7 @@ package davi.xavier.aep.home.fragments.stats
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -33,6 +34,7 @@ class StatsFragment : Fragment() {
         binding = FragmentStatsBinding.inflate(layoutInflater)
         val navFrag = requireActivity().supportFragmentManager.findFragmentById(R.id.home_nav_host) as NavHostFragment
         navController = navFrag.navController
+        setHasOptionsMenu(true)
 
         val adapter = StatsListAdapter()
         adapter.itemTouchedCallback = { onStatTouched(it) }
@@ -52,5 +54,10 @@ class StatsFragment : Fragment() {
 
     private fun onStatTouched(item: StatEntry) {
         item.uid?.let { navController.navigate(StatsFragmentDirections.actionNavStatsToStatInfoFragment(it)) }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.getItem(0).isVisible = false
     }
 } 

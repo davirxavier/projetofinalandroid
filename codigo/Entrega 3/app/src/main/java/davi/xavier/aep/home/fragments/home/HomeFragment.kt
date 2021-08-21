@@ -13,9 +13,7 @@ import android.location.Criteria
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -93,6 +91,8 @@ class HomeFragment : Fragment() {
     private var currentExtraLine: Polyline? = null
     private var startMarker: Marker? = null
     private var endMarker: Marker? = null
+    private var extraStartMarker: Marker? = null
+    private var extraEndMarker: Marker? = null
     
     private var currentUser: User? = null
     private var currentStat: StatEntry? = null
@@ -101,6 +101,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setHasOptionsMenu(true)
         permissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
                 zoomOnCurrentLocation()
@@ -338,7 +339,7 @@ class HomeFragment : Fragment() {
             lineMarkers[line] = lineInfoMarker
             
             locs.firstOrNull()?.let {
-                map.addMarker {
+                extraStartMarker = map.addMarker {
                     position(it)
                     icon(runIconExtra)
                     title(getString(R.string.start_point_marked))
@@ -346,7 +347,7 @@ class HomeFragment : Fragment() {
                 }
             }
             locs.takeIf { locs.size > 1 }?.lastOrNull()?.let {
-                map.addMarker {
+                extraStartMarker = map.addMarker {
                     position(it)
                     icon(runIconExtra)
                     title(getString(R.string.end_point_marked))
@@ -394,5 +395,23 @@ class HomeFragment : Fragment() {
         }.create()
 
         dialog.show()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.getItem(0).isVisible = true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        currentExtraLine?.let {
+            lineMarkers[it]?.remove()
+            lineMarkers.remove(it)
+            it.remove()
+        }
+        extraStartMarker?.remove()
+        extraEndMarker?.remove()
+        zoomOnCurrentLocation()
+        
+        return super.onOptionsItemSelected(item)
     }
 }

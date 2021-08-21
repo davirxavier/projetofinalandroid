@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -37,6 +38,7 @@ class StatInfoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentStatInfoBinding.inflate(layoutInflater)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -130,5 +132,10 @@ class StatInfoFragment : Fragment() {
     
     private fun showRoute() {
         navController.navigate(StatInfoFragmentDirections.actionStatInfoFragmentToNavHome(args.statUid))
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.getItem(0).isVisible = false
     }
 }
